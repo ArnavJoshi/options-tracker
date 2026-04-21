@@ -228,19 +228,37 @@ def render_yfinance_tab() -> None:
 
         # show a compact table with one representative contract per recommended symbol
         rec_df = df_display[df_display["symbol"].isin(recs)].copy()
-        if not rec_df.empty:
-            # keep first occurrence per symbol (nearest expiry / highest volume order preserved)
-            rec_one = rec_df.groupby("symbol", sort=False).first().reset_index()
-            st.dataframe(
-                rec_one[
-                    [
-                        "symbol", "type", "moneyness", "strike", "underlying",
-                        "expiration", "lastPrice", "volume", "openInterest",
-                    ]
-                ],
-                use_container_width=True,
-                hide_index=True,
-            )
+            if not rec_df.empty:
+                # keep first occurrence per symbol (nearest expiry / highest volume order preserved)
+                rec_one = rec_df.groupby("symbol", sort=False).first().reset_index()
+                # Show compact rows and a per-symbol "View" button that jumps to the
+                # drilldown for the representative contract.
+                st.markdown("**Recommended contracts**")
+                for i, r in rec_one.iterrows():
+                    col_sym, col_meta, col_btn = st.columns([1, 4, 1])
+                    with col_sym:
+                        st.code(r["symbol"])
+                    with col_meta:
+                        st.write({
+                            "type": r.get("type"),
+                            "moneyness": r.get("moneyness"),
+                            "strike": r.get("strike"),
+                            "underlying": r.get("underlying"),
+                            "expiration": r.get("expiration"),
+                            "volume": int(r.get("volume") or 0),
+                            "openInterest": int(r.get("openInterest") or 0),
+                        })
+                    # Build the label string to match the selectbox labels below.
+                    label = (
+                        f"{r['symbol']} {str(r.get('type') or '').upper()} ${r.get('strike')} "
+                        f"exp {r.get('expiration')}  ·  vol {int(r.get('volume') or 0)}  ·  OI {int(r.get('openInterest') or 0)}"
+                    )
+                    btn_key = f"view_reco_{r['symbol']}_{i}"
+                    with col_btn:
+                        if st.button("View", key=btn_key):
+                            # set selectbox choice and rerun so the drilldown shows this contract
+                            st.session_state["yf_choice"] = label
+                            st.experimental_rerun()
 
     # Merge consecutive duplicate `top_news` when the same symbol runs 3+ rows in a row:
     # keep the headline on the first row of the run, blank subsequent rows.
