@@ -34,6 +34,19 @@ cp .env.example .env
 # edit .env to add Schwab credentials if you plan to use the Schwab tab
 ```
 
+Example `.env` (minimal)
+
+```bash
+# Optional: Schwab credentials for the Schwab Whale Screener
+SCHWAB_APP_KEY=your_schwab_app_key_here
+SCHWAB_APP_SECRET=your_schwab_app_secret_here
+SCHWAB_CALLBACK_URL=https://127.0.0.1:8182
+SCHWAB_TOKEN_PATH=.cache/schwab_token.json
+
+# Streamlit settings (optional)
+STREAMLIT_SERVER_PORT=8501
+```
+
 ### Run
 
 Run locally with Streamlit:
