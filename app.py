@@ -127,6 +127,10 @@ def render_yfinance_tab() -> None:
         yf_workers = st.slider(
             "Parallel workers", 1, 16, 8, 1, key="yf_workers"
         )
+        yf_show_recs = st.checkbox(
+            "Show Schwab daily recommendations (best-effort)", value=True,
+            key="yf_show_recs",
+        )
 
     try:
         all_syms = get_sp500_symbols()
@@ -198,10 +202,12 @@ def render_yfinance_tab() -> None:
     df_display["top_news"] = df_display["symbol"].map(_top_headline)
 
     # Attach Schwab daily recommendations (best-effort); show at top of table
-    try:
-        recs = get_daily_recommendations(top_n=5)
-    except Exception:  # noqa: BLE001
-        recs = []
+    recs: list[str] = []
+    if yf_show_recs:
+        try:
+            recs = get_daily_recommendations(top_n=5)
+        except Exception:  # noqa: BLE001
+            recs = []
     if recs:
         # compute rank: recommended symbols get rank according to recs order
         rec_map = {s: i for i, s in enumerate(recs)}
