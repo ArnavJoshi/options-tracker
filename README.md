@@ -8,6 +8,27 @@ activity. It supports two data sources:
 - Charles Schwab Market Data API (via `schwab-py`) — optional, used for the
   "Schwab Whale Screener" tab (requires a Schwab developer app)
 
+Quick start (Docker / Makefile)
+
+Prerequisites: Docker and Docker Compose (or Docker Desktop) installed on your machine.
+
+From the project root you can use the provided `Makefile` to build and run the
+app. This is the easiest path for non-developers:
+
+```bash
+# build the Docker image (required once or after changes)
+make build
+
+# run the app in the foreground (Ctrl-C to stop)
+make run
+
+# run in background (build first or use make build &&)
+docker compose up -d
+```
+
+`make run` expects a populated `.env` (copy `.env.example` → `.env`) in the
+project root. See the example `.env` below.
+
 ## Features
 - Scan S&P 500 underliers (configurable size)
 - yfinance-based top-options view (no API key)
@@ -96,33 +117,6 @@ docker compose down             # stop + remove container
 docker compose build --no-cache # rebuild from scratch
 ```
 
-Makefile targets
-
-This repo includes a `Makefile` that wraps common Docker and test tasks. Run
-from the project root:
-
-```bash
-make help        # list available targets
-make build       # build the Docker image (docker compose build)
-make run         # run the stack (docker compose up); requires a filled .env
-make stop        # stop and remove containers (docker compose down)
-make logs        # tail container logs
-make rebuild     # build with --no-cache
-make clean       # stop and remove the image
-make news-test   # smoke-test Yahoo Finance news client (uses .venv or docker)
-```
-
-Examples
-
-```bash
-# build and run in background
-make build && docker compose up -d
-
-# run the app in foreground (Ctrl-C to stop)
-make run
-
-# run the Yahoo Finance news smoke-test for AAPL and NVDA
-SYMS="AAPL NVDA" make news-test
-```
+<!-- Makefile targets moved to Quick start above -->
 
 
