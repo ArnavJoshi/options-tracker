@@ -202,7 +202,7 @@ def render_yfinance_tab() -> None:
     df_display = df.copy()
     df_display["top_news"] = df_display["symbol"].map(_top_headline)
 
-    # Attach Schwab daily recommendations (best-effort); show at top of table
+    # Attach Schwab daily recommendations (best-effort); show in a dedicated panel
     recs: list[str] = []
     rec_title = ""
     rec_url = ""
@@ -216,18 +216,31 @@ def render_yfinance_tab() -> None:
             recs = []
             rec_title = ""
             rec_url = ""
+
     if recs:
-        # compute rank: recommended symbols get rank according to recs order
-        rec_map = {s: i for i, s in enumerate(recs)}
-        df_display = df_display.reset_index(drop=False)
-        df_display["rec_rank"] = df_display["symbol"].map(lambda s: rec_map.get(s, 9999))
-        # sort so recommended tickers appear first, preserving prior order within groups
-        df_display = df_display.sort_values(["rec_rank", "index"], ascending=[True, True])
-        df_display = df_display.drop(columns=["index"]).reset_index(drop=True)
-        if rec_url:
-            st.info(f"Schwab daily recommendations: {', '.join(recs)}  ·  [read update]({rec_url})")
-        else:
-            st.info("Schwab daily recommendations: " + ", ".join(recs))
+        # show a dedicated recommendations panel above the main table
+        st.subheader("Schwab daily recommendations")
+        if rec_title and rec_url:
+            st.markdown(f"**{rec_title}** — [read update]({rec_url})")
+        elif rec_title:
+            st.markdown(f"**{rec_title}**")
+        st.write("Recommended tickers (best-effort): ", ", ".join(recs))
+
+        # show a compact table with one representative contract per recommended symbol
+        rec_df = df_display[df_display["symbol"].isin(recs)].copy()
+        if not rec_df.empty:
+            # keep first occurrence per symbol (nearest expiry / highest volume order preserved)
+            rec_one = rec_df.groupby("symbol", sort=False).first().reset_index()
+            st.dataframe(
+                rec_one[
+                    [
+                        "symbol", "type", "moneyness", "strike", "underlying",
+                        "expiration", "lastPrice", "volume", "openInterest",
+                    ]
+                ],
+                use_container_width=True,
+                hide_index=True,
+            )
 
     # Merge consecutive duplicate `top_news` when the same symbol runs 3+ rows in a row:
     # keep the headline on the first row of the run, blank subsequent rows.
