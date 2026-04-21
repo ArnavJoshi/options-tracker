@@ -1,0 +1,14 @@
+services:
+  options-tracker:
+    build: .
+    image: options-tracker:latest
+    container_name: options-tracker
+    env_file:
+      - .env
+    ports:
+      - "8501:8501"   # Streamlit dashboard
+      - "8182:8182"   # Schwab OAuth callback (first-run login only)
+    volumes:
+      - ./.cache:/app/.cache   # persist Schwab token + S&P500 cache
+    restart: unless-stopped
+

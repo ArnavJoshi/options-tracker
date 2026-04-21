@@ -1,0 +1,11 @@
+streamlit>=1.32
+streamlit-autorefresh>=1.0.1
+pandas>=2.1
+requests>=2.31
+python-dotenv>=1.0
+cachetools>=5.3
+plotly>=5.20
+lxml>=5.1
+schwab-py>=1.4.0
+yfinance>=0.2.50
+
