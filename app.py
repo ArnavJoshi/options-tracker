@@ -17,6 +17,7 @@ from streamlit_autorefresh import st_autorefresh
 from data.news_client import get_company_news
 from data.schwab_client import SchwabClient
 from data.sp500 import get_sp500_symbols
+from data.schwab_updates import get_daily_recommendations
 from data.universe import get_top_active_symbols
 from data.yfinance_options import get_top_sp500_options
 from screener.engine import scan_universe
@@ -195,6 +196,21 @@ def render_yfinance_tab() -> None:
 
     df_display = df.copy()
     df_display["top_news"] = df_display["symbol"].map(_top_headline)
+
+    # Attach Schwab daily recommendations (best-effort); show at top of table
+    try:
+        recs = get_daily_recommendations(top_n=5)
+    except Exception:  # noqa: BLE001
+        recs = []
+    if recs:
+        # compute rank: recommended symbols get rank according to recs order
+        rec_map = {s: i for i, s in enumerate(recs)}
+        df_display = df_display.reset_index(drop=False)
+        df_display["rec_rank"] = df_display["symbol"].map(lambda s: rec_map.get(s, 9999))
+        # sort so recommended tickers appear first, preserving prior order within groups
+        df_display = df_display.sort_values(["rec_rank", "index"], ascending=[True, True])
+        df_display = df_display.drop(columns=["index"]).reset_index(drop=True)
+        st.info("Schwab daily recommendations: " + ", ".join(recs))
 
     # Merge consecutive duplicate `top_news` when the same symbol runs 3+ rows in a row:
     # keep the headline on the first row of the run, blank subsequent rows.
