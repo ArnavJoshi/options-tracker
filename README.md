@@ -83,4 +83,33 @@ docker compose down             # stop + remove container
 docker compose build --no-cache # rebuild from scratch
 ```
 
+Makefile targets
+
+This repo includes a `Makefile` that wraps common Docker and test tasks. Run
+from the project root:
+
+```bash
+make help        # list available targets
+make build       # build the Docker image (docker compose build)
+make run         # run the stack (docker compose up); requires a filled .env
+make stop        # stop and remove containers (docker compose down)
+make logs        # tail container logs
+make rebuild     # build with --no-cache
+make clean       # stop and remove the image
+make news-test   # smoke-test Yahoo Finance news client (uses .venv or docker)
+```
+
+Examples
+
+```bash
+# build and run in background
+make build && docker compose up -d
+
+# run the app in foreground (Ctrl-C to stop)
+make run
+
+# run the Yahoo Finance news smoke-test for AAPL and NVDA
+SYMS="AAPL NVDA" make news-test
+```
+
 
