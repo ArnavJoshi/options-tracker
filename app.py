@@ -157,6 +157,9 @@ def render_yfinance_tab() -> None:
         yf_workers = st.slider(
             "Parallel workers", 1, 16, 8, 1, key="yf_workers"
         )
+        batching = st.checkbox("Enable batching for large universes (reduces rate-limit/timeouts)", value=True, key="yf_batching")
+        batch_size = st.number_input("Batch size (symbols per request)", min_value=10, max_value=2000, value=200, step=10, key="yf_batch_size")
+        batch_pause = st.number_input("Pause between batches (seconds)", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="yf_batch_pause")
         # Schwab recommendations moved to a dedicated tab below.
         # (Removed: Show Schwab daily recommendations checkbox and refresh button.)
 
@@ -196,19 +199,58 @@ def render_yfinance_tab() -> None:
             done / max(total, 1), text=f"Scanned {done}/{total} symbols…"
         )
 
-    df = get_top_sp500_options(
-        symbols,
-        top_n=int(yf_top_n),
-        max_expiries=int(yf_max_expiries),
-        min_volume=int(yf_min_volume),
-        min_open_interest=int(yf_min_oi),
-        side=yf_side_arg,
-        moneyness=yf_moneyness or None,
-        atm_pct=float(yf_atm_pct) / 100.0,
-        sort_by=yf_sort_by,
-        max_workers=int(yf_workers),
-        progress_cb=_on_progress,
-    )
+    # If batching is enabled and the universe is large, process symbols in chunks
+    import math, time
+
+    if batching and len(symbols) > int(batch_size):
+        chunks = [symbols[i : i + int(batch_size)] for i in range(0, len(symbols), int(batch_size))]
+        dfs = []
+        total_batches = len(chunks)
+        for bi, chunk in enumerate(chunks, start=1):
+            status.info(f"Fetching batch {bi}/{total_batches} ({len(chunk)} symbols)…")
+            try:
+                df_batch = get_top_sp500_options(
+                    chunk,
+                    top_n=int(yf_top_n),
+                    max_expiries=int(yf_max_expiries),
+                    min_volume=int(yf_min_volume),
+                    min_open_interest=int(yf_min_oi),
+                    side=yf_side_arg,
+                    moneyness=yf_moneyness or None,
+                    atm_pct=float(yf_atm_pct) / 100.0,
+                    sort_by=yf_sort_by,
+                    max_workers=int(yf_workers),
+                    progress_cb=_on_progress,
+                )
+                if df_batch is not None and not df_batch.empty:
+                    dfs.append(df_batch)
+            except Exception as exc:  # noqa: BLE001
+                log.warning("Batch %s failed: %s", bi, exc)
+            # pause between batches to be gentle with remote services
+            time.sleep(float(batch_pause))
+
+        if not dfs:
+            df = pd.DataFrame(columns=[
+                "symbol", "type", "strike", "expiration", "underlying",
+                "moneyness", "lastPrice", "bid", "ask", "volume", "openInterest",
+                "impliedVolatility", "inTheMoney", "change", "percentChange", "contractSymbol",
+            ])
+        else:
+            df = pd.concat(dfs, ignore_index=True)
+    else:
+        df = get_top_sp500_options(
+            symbols,
+            top_n=int(yf_top_n),
+            max_expiries=int(yf_max_expiries),
+            min_volume=int(yf_min_volume),
+            min_open_interest=int(yf_min_oi),
+            side=yf_side_arg,
+            moneyness=yf_moneyness or None,
+            atm_pct=float(yf_atm_pct) / 100.0,
+            sort_by=yf_sort_by,
+            max_workers=int(yf_workers),
+            progress_cb=_on_progress,
+        )
     progress.empty()
     # Filter out contracts that expire today and keep only options with
     # at least 1 week (7 days) until expiration per user request.
