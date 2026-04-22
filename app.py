@@ -14,6 +14,23 @@ import streamlit as st
 from dotenv import load_dotenv
 from streamlit_autorefresh import st_autorefresh
 
+# Compatibility shim: some older Streamlit versions (or unexpected runtime
+# environments) may not expose newer helpers like `st.pills`. Monkeypatch a
+# minimal fallback so the app doesn't crash at import-time and the tabs still
+# render. The fallback maps to `st.multiselect` for multi-selection and
+# `st.radio` for single-selection behavior.
+if not hasattr(st, "pills"):
+    def _pills(label, *, options, selection_mode="single", default=None, key=None, **kwargs):
+        # selection_mode: "single" | "multi"
+        if selection_mode == "multi":
+            # Multiselect expects `default` to be a list
+            default_val = default if isinstance(default, (list, tuple)) else [default] if default is not None else []
+            return st.multiselect(label, options=options, default=default_val, key=key)
+        # single selection -> radio (horizontal not supported in older versions)
+        return [st.radio(label, options=options, index=(options.index(default) if default in options else 0), key=key)]
+
+    st.pills = _pills
+
 from data.news_client import get_company_news
 from data.schwab_client import SchwabClient
 from data.sp500 import get_sp500_symbols
@@ -104,12 +121,16 @@ def render_yfinance_tab() -> None:
         yf_min_oi = st.number_input(
             "Min open interest", min_value=0, value=0, step=50, key="yf_min_oi"
         )
+        yf_min_dte = st.slider(
+            "Min days to expiration (DTE)", 0, 365, 7, 1, key="yf_min_dte",
+            help="Minimum number of days until option expiration (DTE). Set to 0 to include options expiring today.",
+        )
         yf_max_expiries = st.slider(
             "Expiries per symbol (nearest first)", 1, 8, 3, 1, key="yf_max_exp"
         )
-        yf_n_symbols = st.slider(
-            "Symbols to scan (from S&P 500)", 5, 500, 50, 5, key="yf_n_syms",
-        )
+        # Removed: "Symbols to scan" slider — by default scan the full S&P 500
+        # (or a user-provided filter via `yf_symbol_filter` below). This avoids
+        # exposing a redundant slider in the UI.
         try:
             _all_sp500 = get_sp500_symbols()
         except Exception:  # noqa: BLE001
@@ -127,11 +148,8 @@ def render_yfinance_tab() -> None:
         yf_workers = st.slider(
             "Parallel workers", 1, 16, 8, 1, key="yf_workers"
         )
-        yf_show_recs = st.checkbox(
-            "Show Schwab daily recommendations (best-effort)", value=True,
-            key="yf_show_recs",
-        )
-        yf_refresh_recs = st.button("Refresh Schwab recommendations")
+        # Schwab recommendations moved to a dedicated tab below.
+        # (Removed: Show Schwab daily recommendations checkbox and refresh button.)
 
     try:
         all_syms = get_sp500_symbols()
@@ -142,7 +160,8 @@ def render_yfinance_tab() -> None:
     if yf_symbol_filter:
         symbols = list(yf_symbol_filter)
     else:
-        symbols = all_syms[: int(yf_n_symbols)]
+        # By default scan the full S&P 500 list
+        symbols = all_syms
 
     status = st.empty()
     status.info(
@@ -169,6 +188,18 @@ def render_yfinance_tab() -> None:
         progress_cb=_on_progress,
     )
     progress.empty()
+    # Filter out contracts that expire today and keep only options with
+    # at least 1 week (7 days) until expiration per user request.
+    try:
+        df = df.copy()
+        df["expiration_dt"] = pd.to_datetime(df["expiration"]).dt.normalize()
+        today = pd.Timestamp.now().normalize()
+        df["dte"] = (df["expiration_dt"] - today).dt.days
+        # keep only contracts with at least the configured DTE
+        df = df[df["dte"] >= int(yf_min_dte)].reset_index(drop=True)
+    except Exception:  # noqa: BLE001
+        # If parsing fails for any reason, fall back to the original df
+        pass
     status.success(
         f"Top {len(df)} contracts across {len(symbols)} symbols · "
         f"ranked by {', '.join(yf_sort_by)} (desc) · "
@@ -206,59 +237,7 @@ def render_yfinance_tab() -> None:
     recs: list[str] = []
     rec_title = ""
     rec_url = ""
-    if yf_show_recs:
-        try:
-            upd = get_daily_update(top_n=5, force=bool(yf_refresh_recs))
-            recs = upd.get("recs", []) or []
-            rec_title = upd.get("title", "") or ""
-            rec_url = upd.get("url", "") or ""
-        except Exception:  # noqa: BLE001
-            recs = []
-            rec_title = ""
-            rec_url = ""
-
-    if recs:
-        # show a dedicated recommendations panel above the main table
-        st.subheader("Schwab daily recommendations")
-        if rec_title and rec_url:
-            st.markdown(f"**{rec_title}** — [read update]({rec_url})")
-        elif rec_title:
-            st.markdown(f"**{rec_title}**")
-        st.write("Recommended tickers (best-effort): ", ", ".join(recs))
-
-        # show a compact table with one representative contract per recommended symbol
-        rec_df = df_display[df_display["symbol"].isin(recs)].copy()
-            if not rec_df.empty:
-                # keep first occurrence per symbol (nearest expiry / highest volume order preserved)
-                rec_one = rec_df.groupby("symbol", sort=False).first().reset_index()
-                # Show compact rows and a per-symbol "View" button that jumps to the
-                # drilldown for the representative contract.
-                st.markdown("**Recommended contracts**")
-                for i, r in rec_one.iterrows():
-                    col_sym, col_meta, col_btn = st.columns([1, 4, 1])
-                    with col_sym:
-                        st.code(r["symbol"])
-                    with col_meta:
-                        st.write({
-                            "type": r.get("type"),
-                            "moneyness": r.get("moneyness"),
-                            "strike": r.get("strike"),
-                            "underlying": r.get("underlying"),
-                            "expiration": r.get("expiration"),
-                            "volume": int(r.get("volume") or 0),
-                            "openInterest": int(r.get("openInterest") or 0),
-                        })
-                    # Build the label string to match the selectbox labels below.
-                    label = (
-                        f"{r['symbol']} {str(r.get('type') or '').upper()} ${r.get('strike')} "
-                        f"exp {r.get('expiration')}  ·  vol {int(r.get('volume') or 0)}  ·  OI {int(r.get('openInterest') or 0)}"
-                    )
-                    btn_key = f"view_reco_{r['symbol']}_{i}"
-                    with col_btn:
-                        if st.button("View", key=btn_key):
-                            # set selectbox choice and rerun so the drilldown shows this contract
-                            st.session_state["yf_choice"] = label
-                            st.experimental_rerun()
+    # Schwab recommendations moved to a dedicated tab (see "Schwab Options Update").
 
     # Merge consecutive duplicate `top_news` when the same symbol runs 3+ rows in a row:
     # keep the headline on the first row of the run, blank subsequent rows.
@@ -288,6 +267,7 @@ def render_yfinance_tab() -> None:
 
     display_cols = [
         "symbol", "type", "moneyness", "strike", "underlying", "expiration",
+        "dte",
         "lastPrice", "bid", "ask",
         "volume", "openInterest", "vol_oi_ratio",
         "impliedVolatility", "percentChange",
@@ -307,6 +287,7 @@ def render_yfinance_tab() -> None:
             "moneyness": st.column_config.TextColumn("ITM/ATM/OTM"),
             "underlying": st.column_config.NumberColumn("spot", format="$%.2f"),
             "strike": st.column_config.NumberColumn("strike", format="$%.2f"),
+            "dte": st.column_config.NumberColumn("DTE"),
             "vol_oi_ratio": st.column_config.NumberColumn("vol/OI", format="%.2f"),
             "impliedVolatility": st.column_config.NumberColumn("IV", format="%.2f"),
             "percentChange": st.column_config.NumberColumn("chg%", format="%.2f"),
@@ -543,12 +524,108 @@ def render_schwab_tab() -> None:
             st.divider()
 
 
+def render_schwab_update_tab() -> None:
+    """Show Schwab Today's Options Market Update and representative contracts.
+
+    This tab fetches the Schwab story page, lists the most-mentioned S&P500
+    tickers (best-effort), and shows a representative contract per ticker
+    using the existing yfinance chains helper.
+    """
+    with st.sidebar:
+        st.header("Schwab Options Update")
+        schwab_top_n = st.slider("Top N recommendations", 1, 20, 5, 1, key="schwab_update_n")
+        schwab_refresh = st.button("Refresh Schwab update", key="schwab_update_refresh")
+
+    status = st.empty()
+    status.info("Fetching Schwab Today's Options Market Update…")
+    try:
+        upd = get_daily_update(top_n=int(schwab_top_n), force=bool(schwab_refresh))
+        recs = upd.get("recs", []) or []
+        title = upd.get("title", "") or ""
+        url = upd.get("url", "") or ""
+    except Exception:  # noqa: BLE001
+        st.error("Failed to fetch Schwab update")
+        return
+
+    status.success(f"Fetched {len(recs)} recommendation(s).")
+
+    if title:
+        if url:
+            st.markdown(f"**{title}** — [read update]({url})")
+        else:
+            st.markdown(f"**{title}**")
+
+    if not recs:
+        st.info("No recommended tickers extracted from the Schwab update.")
+        return
+
+    st.subheader("Recommended tickers (best-effort)")
+    st.write(", ".join(recs))
+
+    # Fetch a representative contract per recommended symbol via yfinance
+    try:
+        df = get_top_sp500_options(
+            recs,
+            top_n=1,
+            max_expiries=3,
+            min_volume=0,
+            min_open_interest=0,
+            side="both",
+            moneyness=None,
+            atm_pct=0.01,
+            sort_by=["volume", "openInterest"],
+            max_workers=4,
+        )
+    except Exception:
+        df = None
+
+    if df is None or df.empty:
+        st.info("Could not fetch option chains for recommended tickers via yfinance.")
+        return
+
+    rec_df = df.copy()
+    rec_one = rec_df.groupby("symbol", sort=False).first().reset_index()
+    st.markdown("**Recommended contracts**")
+    for i, r in rec_one.iterrows():
+        col_sym, col_meta, col_btn = st.columns([1, 4, 1])
+        with col_sym:
+            st.code(r["symbol"])
+        with col_meta:
+            st.write({
+                "type": r.get("type"),
+                "moneyness": r.get("moneyness"),
+                "strike": r.get("strike"),
+                "underlying": r.get("underlying"),
+                "expiration": r.get("expiration"),
+                "volume": int(r.get("volume") or 0),
+                "openInterest": int(r.get("openInterest") or 0),
+            })
+        # Build matching label for the main yfinance drilldown selectbox
+        label = (
+            f"{r['symbol']} {str(r.get('type') or '').upper()} ${r.get('strike')} "
+            f"exp {r.get('expiration')}  ·  vol {int(r.get('volume') or 0)}  ·  OI {int(r.get('openInterest') or 0)}"
+        )
+        btn_key = f"view_schwab_{r['symbol']}_{i}"
+        with col_btn:
+            if st.button("View", key=btn_key):
+                # set the yfinance contract choice and rerun so the drilldown shows it
+                st.session_state["yf_choice"] = label
+                st.experimental_rerun()
+
+
 # ---------------- Tabs ----------------
-tab_yf, tab_schwab = st.tabs(
-    ["🟡 S&P 500 Top Options (yfinance)", "🐳 Schwab Whale Screener"]
+# Use plain text labels for tabs to avoid emoji-rendering issues in some browsers/environments
+tab_yf, tab_schwab, tab_schwab_update = st.tabs(
+    [
+        "S&P 500 Top Options (yfinance)",
+        "Schwab Whale Screener",
+        "Schwab Options Update",
+    ]
 )
 with tab_yf:
     render_yfinance_tab()
 with tab_schwab:
     render_schwab_tab()
+with tab_schwab_update:
+    render_schwab_update_tab()
 
