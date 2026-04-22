@@ -75,7 +75,8 @@ if auto:
 def render_yfinance_tab() -> None:
     with st.sidebar:
         st.header("yfinance Top Options")
-        yf_top_n = st.slider("Top N contracts", 10, 300, 50, 10, key="yf_top_n")
+        # Default to scanning more contracts (300) for broader coverage
+        yf_top_n = st.slider("Top N contracts", 10, 300, 300, 10, key="yf_top_n")
         yf_sort_by = st.multiselect(
             "Rank by (in order, all descending)",
             options=[
@@ -115,11 +116,12 @@ def render_yfinance_tab() -> None:
             0.1, 5.0, 1.0, 0.1, key="yf_atm_pct",
             help="Strikes within this band around the underlying are tagged ATM.",
         )
+        # Increase defaults to focus on larger, more liquid contracts by default
         yf_min_volume = st.number_input(
-            "Min volume", min_value=0, value=100, step=50, key="yf_min_vol"
+            "Min volume", min_value=0, value=3000, step=50, key="yf_min_vol"
         )
         yf_min_oi = st.number_input(
-            "Min open interest", min_value=0, value=0, step=50, key="yf_min_oi"
+            "Min open interest", min_value=0, value=3000, step=50, key="yf_min_oi"
         )
         yf_min_dte = st.slider(
             "Min days to expiration (DTE)", 0, 365, 7, 1, key="yf_min_dte",
