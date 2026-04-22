@@ -7,29 +7,13 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
+import logging
 
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 from dotenv import load_dotenv
 from streamlit_autorefresh import st_autorefresh
-
-# Compatibility shim: some older Streamlit versions (or unexpected runtime
-# environments) may not expose newer helpers like `st.pills`. Monkeypatch a
-# minimal fallback so the app doesn't crash at import-time and the tabs still
-# render. The fallback maps to `st.multiselect` for multi-selection and
-# `st.radio` for single-selection behavior.
-if not hasattr(st, "pills"):
-    def _pills(label, *, options, selection_mode="single", default=None, key=None, **kwargs):
-        # selection_mode: "single" | "multi"
-        if selection_mode == "multi":
-            # Multiselect expects `default` to be a list
-            default_val = default if isinstance(default, (list, tuple)) else [default] if default is not None else []
-            return st.multiselect(label, options=options, default=default_val, key=key)
-        # single selection -> radio (horizontal not supported in older versions)
-        return [st.radio(label, options=options, index=(options.index(default) if default in options else 0), key=key)]
-
-    st.pills = _pills
 
 from data.news_client import get_company_news
 from data.schwab_client import SchwabClient
@@ -43,131 +27,81 @@ load_dotenv()
 
 st.set_page_config(page_title="Options Whale Tracker", layout="wide")
 st.title("📈 S&P 500 Options Whale Tracker")
-st.caption(
-    "yfinance S&P 500 top options · Schwab whale screener · Yahoo Finance news"
-)
+st.caption("yfinance S&P 500 top options · Schwab whale screener · Yahoo Finance news")
 
+# Compatibility shim: some older Streamlit versions may not expose `st.pills`.
+# Provide a minimal fallback implementation that maps to existing controls.
+if not hasattr(st, "pills"):
+    def _pills(label, *, options, selection_mode="single", default=None, key=None, **kwargs):
+        if selection_mode == "multi":
+            default_val = default if isinstance(default, (list, tuple)) else [default] if default is not None else []
+            return st.multiselect(label, options=options, default=default_val, key=key)
+        idx = options.index(default) if default in options else 0
+        return [st.radio(label, options=options, index=idx, key=key)]
+    st.pills = _pills
+
+log = logging.getLogger(__name__)
 
 @st.cache_resource
 def get_client() -> SchwabClient:
     return SchwabClient()
 
-
-# ---------------- Global sidebar ----------------
-with st.sidebar:
-    st.header("Global")
-    auto = st.checkbox("Auto-refresh every 30s", value=False)
-    if st.button("🔄 Refresh now"):
-        st.rerun()
-    st.caption(
-        f"Schwab key: {'✅' if os.getenv('SCHWAB_APP_KEY') else '❌'}  ·  "
-        f"Schwab secret: {'✅' if os.getenv('SCHWAB_APP_SECRET') else '❌'}  ·  "
-        f"News: Yahoo Finance (yfinance)"
-    )
-
-if auto:
-    st_autorefresh(interval=30_000, key="auto_refresh")
-
-
-# ============================================================
-# Tab – yfinance S&P 500 top options
-# ============================================================
 def render_yfinance_tab() -> None:
+    """Render the yfinance top options tab and its sidebar controls."""
     with st.sidebar:
         st.header("yfinance Top Options")
-        # Default to scanning more contracts (300) for broader coverage
         yf_top_n = st.slider("Top N contracts", 10, 300, 300, 10, key="yf_top_n")
         yf_sort_by = st.multiselect(
             "Rank by (in order, all descending)",
-            options=[
-                "volume", "open_interest", "vol_oi_ratio", "iv",
-                "strike", "lastPrice", "percentChange",
-            ],
+            options=["volume", "open_interest", "vol_oi_ratio", "iv", "strike", "lastPrice", "percentChange"],
             default=["volume", "open_interest"],
             key="yf_sort_by",
-            help=(
-                "Multi-column sort, all descending. First selected column is the "
-                "primary sort key; ties broken by subsequent columns."
-            ),
+            help=("Multi-column sort, all descending. First selected column is the "
+                  "primary sort key; ties broken by subsequent columns."),
         )
         if not yf_sort_by:
             yf_sort_by = ["volume", "open_interest"]
-        yf_side = st.pills(
-            "Side",
-            options=["call", "put"],
-            selection_mode="multi",
-            default=["call", "put"],
-            key="yf_side",
-        )
+        yf_side = st.pills("Side", options=["call", "put"], selection_mode="multi", default=["call", "put"], key="yf_side")
         if not yf_side or set(yf_side) == {"call", "put"}:
             yf_side_arg = "both"
         else:
-            yf_side_arg = yf_side[0]  # single selection
-        yf_moneyness = st.pills(
-            "Moneyness",
-            options=["ITM", "ATM", "OTM"],
-            selection_mode="multi",
-            default=["ITM", "ATM", "OTM"],
-            key="yf_moneyness",
-            help="Filter contracts by their position relative to the underlying.",
-        )
-        yf_atm_pct = st.slider(
-            "ATM band (± % of underlying)",
-            0.1, 5.0, 1.0, 0.1, key="yf_atm_pct",
-            help="Strikes within this band around the underlying are tagged ATM.",
-        )
-        # Increase defaults to focus on larger, more liquid contracts by default
-        yf_min_volume = st.number_input(
-            "Min volume", min_value=0, value=3000, step=50, key="yf_min_vol"
-        )
-        yf_min_oi = st.number_input(
-            "Min open interest", min_value=0, value=3000, step=50, key="yf_min_oi"
-        )
-        yf_min_dte = st.slider(
-            "Min days to expiration (DTE)", 0, 365, 7, 1, key="yf_min_dte",
-            help="Minimum number of days until option expiration (DTE). Set to 0 to include options expiring today.",
-        )
-        yf_max_expiries = st.slider(
-            "Expiries per symbol (nearest first)", 1, 8, 3, 1, key="yf_max_exp"
-        )
-        # Removed: "Symbols to scan" slider — by default scan the full S&P 500
-        # (or a user-provided filter via `yf_symbol_filter` below). This avoids
-        # exposing a redundant slider in the UI.
+            yf_side_arg = yf_side[0]
+        yf_moneyness = st.pills("Moneyness", options=["ITM", "ATM", "OTM"], selection_mode="multi", default=["ITM", "ATM", "OTM"], key="yf_moneyness", help="Filter contracts by their position relative to the underlying.")
+        yf_atm_pct = st.slider("ATM band (± % of underlying)", 0.1, 5.0, 1.0, 0.1, key="yf_atm_pct", help="Strikes within this band around the underlying are tagged ATM.")
+        yf_min_volume = st.number_input("Min volume", min_value=0, value=3000, step=50, key="yf_min_vol")
+        yf_min_oi = st.number_input("Min open interest", min_value=0, value=3000, step=50, key="yf_min_oi")
+        st.caption(f"Current Min open interest: {yf_min_oi}")
+        yf_min_dte = st.slider("Min days to expiration (DTE)", 0, 365, 7, 1, key="yf_min_dte", help="Minimum number of days until option expiration (DTE). Set to 0 to include options expiring today.")
+        yf_max_expiries = st.slider("Expiries per symbol (nearest first)", 1, 8, 3, 1, key="yf_max_exp")
         try:
             _all_sp500 = get_sp500_symbols()
-        except Exception:  # noqa: BLE001
+        except Exception:
             _all_sp500 = []
-        universe_choice = st.selectbox(
-            "Universe",
-            options=["S&P 500", "All tickers (.tickers_all.txt)"],
-            index=0,
-            key="yf_universe",
-            help="Choose the universe of tickers to scan. Use the custom file to scan any tickers supported by yfinance.",
-        )
-        yf_symbol_filter = st.multiselect(
-            "Filter symbols (optional)",
-            options=_all_sp500,
-            default=[],
-            key="yf_symbol_filter",
-            help=(
-                "Restrict the scan to specific tickers. When set, overrides the "
-                "'Symbols to scan' slider."
-            ),
-        )
-        yf_workers = st.slider(
-            "Parallel workers", 1, 16, 8, 1, key="yf_workers"
-        )
+        universe_choice = st.selectbox("Universe", options=["S&P 500", "All tickers (.tickers_all.txt)"], index=0, key="yf_universe", help="Choose the universe of tickers to scan. Use the custom file to scan any tickers supported by yfinance.")
+        yf_symbol_filter = st.multiselect("Filter symbols (optional)", options=_all_sp500, default=[], key="yf_symbol_filter", help=("Restrict the scan to specific tickers. When set, overrides the 'Symbols to scan' slider."))
+        yf_workers = st.slider("Parallel workers", 1, 16, 8, 1, key="yf_workers")
         batching = st.checkbox("Enable batching for large universes (reduces rate-limit/timeouts)", value=True, key="yf_batching")
         batch_size = st.number_input("Batch size (symbols per request)", min_value=10, max_value=2000, value=200, step=10, key="yf_batch_size")
         batch_pause = st.number_input("Pause between batches (seconds)", min_value=0.0, max_value=10.0, value=1.0, step=0.1, key="yf_batch_pause")
-        # Schwab recommendations moved to a dedicated tab below.
-        # (Removed: Show Schwab daily recommendations checkbox and refresh button.)
+
+    try:
+        import data.yfinance_options as _yopt
+        prev = st.session_state.get("_prev_yf_min_oi")
+        if prev is None or int(prev) != int(yf_min_oi):
+            _yopt._cache.clear()
+            st.session_state["_prev_yf_min_oi"] = int(yf_min_oi)
+    except Exception:
+        pass
 
     try:
         all_syms = get_sp500_symbols()
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         st.error(f"Failed to load S&P 500 list: {exc}")
         return
+
+    # ...existing code... (detailed symbol selection handled later)
+
+    # ...existing code...
 
     if yf_symbol_filter:
         symbols = list(yf_symbol_filter)
@@ -178,11 +112,24 @@ def render_yfinance_tab() -> None:
         else:
             from pathlib import Path
 
-            tickers_file = Path(__file__).resolve().parent.parent / ".tickers_all.txt"
-            if tickers_file.exists():
+            # Prefer a .tickers_all.txt next to this app module (repo root when
+            # the app is mounted at /app). Some run modes may set the CWD
+            # differently, so also check the current working directory as a
+            # fallback.
+            repo_candidate = Path(__file__).resolve().parent / ".tickers_all.txt"
+            cwd_candidate = Path.cwd() / ".tickers_all.txt"
+            tickers_file = None
+            if repo_candidate.exists():
+                tickers_file = repo_candidate
+            elif cwd_candidate.exists():
+                tickers_file = cwd_candidate
+
+            if tickers_file and tickers_file.exists():
                 try:
                     txt = tickers_file.read_text().splitlines()
                     symbols = [s.strip().upper() for s in txt if s.strip()]
+                    # Show where we loaded the tickers from for easier debugging
+                    st.sidebar.info(f"Loaded .tickers_all.txt from: {tickers_file}")
                 except Exception:
                     st.error("Failed to read .tickers_all.txt; falling back to S&P 500")
                     symbols = all_syms
@@ -266,7 +213,7 @@ def render_yfinance_tab() -> None:
         pass
     status.success(
         f"Top {len(df)} contracts across {len(symbols)} symbols · "
-        f"ranked by {', '.join(yf_sort_by)} (desc) · "
+        f"ranked by {', '.join(yf_sort_by)} (desc) · min_OI={int(yf_min_oi)} · "
         f"updated {datetime.now().strftime('%H:%M:%S')}"
     )
 
@@ -682,10 +629,39 @@ def render_schwab_update_tab() -> None:
     tickers (best-effort), and shows a representative contract per ticker
     using the existing yfinance chains helper.
     """
+    # Lazy-load: allow the Schwab update to be loaded only when requested.
+    # If the app is using a selectbox/radio to control the active tab, that
+    # control should set `st.session_state['active_tab']` to the tab label
+    # ("Schwab Options Update") so we can auto-load when the user selects it.
+    # If a parent control set the active tab in session state, treat selection
+    # as an implicit load action so the update fetches automatically when the
+    # user switches to that tab.
+    if st.session_state.get("active_tab") == "Schwab Options Update":
+        st.session_state["schwab_update_loaded"] = True
+
     with st.sidebar:
         st.header("Schwab Options Update")
         schwab_top_n = st.slider("Top N recommendations", 1, 20, 5, 1, key="schwab_update_n")
-        schwab_refresh = st.button("Refresh Schwab update", key="schwab_update_refresh")
+        # Provide a dedicated "Load" button so the heavy fetch only happens
+        # when the user chooses to load this tab's content. If a parent control
+        # (e.g., a selectbox) set `st.session_state['active_tab']`, the tab will
+        # already be marked loaded and the fetch will proceed automatically.
+        load_now = st.button("Load Schwab update", key="schwab_update_load")
+        # Show refresh button only after the update has been loaded once.
+        show_refresh = st.session_state.get("schwab_update_loaded", False)
+        schwab_refresh = False
+        if show_refresh:
+            schwab_refresh = st.button("Refresh Schwab update", key="schwab_update_refresh")
+
+    # If the user clicked the Load button, mark the tab as loaded and rerun so
+    # the actual fetching happens on the next script run (avoids double-run).
+    if load_now:
+        st.session_state["schwab_update_loaded"] = True
+        st.experimental_rerun()
+
+    if not st.session_state.get("schwab_update_loaded", False):
+        st.info("Click 'Load Schwab update' in the sidebar to fetch the latest update.")
+        return
 
     status = st.empty()
     status.info("Fetching Schwab Today's Options Market Update…")
@@ -764,19 +740,35 @@ def render_schwab_update_tab() -> None:
                 st.experimental_rerun()
 
 
-# ---------------- Tabs ----------------
-# Use plain text labels for tabs to avoid emoji-rendering issues in some browsers/environments
-tab_yf, tab_schwab, tab_schwab_update = st.tabs(
-    [
-        "S&P 500 Top Options (yfinance)",
-        "Schwab Whale Screener",
-        "Schwab Options Update",
-    ]
-)
-with tab_yf:
+# ---------------- Tab selector (radio/selectbox replacement) ----------------
+# Replace Streamlit's `st.tabs` with an explicit selection control so we can
+# detect when the user activates a tab. This allows lazy-loading behavior
+# (e.g., auto-loading the Schwab update when its tab is selected).
+tab_labels = [
+    "S&P 500 Top Options (yfinance)",
+    "Schwab Whale Screener",
+    "Schwab Options Update",
+]
+
+# Initialize session key for active tab if missing
+if "active_tab" not in st.session_state:
+    st.session_state["active_tab"] = tab_labels[0]
+
+# Render a horizontal radio control for tab selection when possible; fall
+# back to a selectbox if `horizontal` is not supported in the runtime.
+try:
+    choice = st.radio("", options=tab_labels, index=tab_labels.index(st.session_state["active_tab"]), horizontal=True, key="active_tab_radio")
+except TypeError:
+    choice = st.selectbox("", options=tab_labels, index=tab_labels.index(st.session_state["active_tab"]), key="active_tab_radio")
+
+# Persist choice to a stable session key used by other components
+st.session_state["active_tab"] = choice
+
+# Dispatch to the appropriate renderer
+if choice == tab_labels[0]:
     render_yfinance_tab()
-with tab_schwab:
+elif choice == tab_labels[1]:
     render_schwab_tab()
-with tab_schwab_update:
+elif choice == tab_labels[2]:
     render_schwab_update_tab()
 

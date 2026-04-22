@@ -23,11 +23,20 @@ from __future__ import annotations
 
 import argparse
 import logging
+import json
 import time
 from pathlib import Path
+from datetime import datetime, timedelta
 from typing import Iterable, List
 
-import requests
+# Prefer requests but fall back to urllib from the stdlib when requests is not
+# available (so the script can run in minimal host environments).
+try:
+    import requests  # type: ignore
+except Exception:  # pragma: no cover - fallback path for minimal environments
+    requests = None
+    import urllib.request
+    import urllib.error
 
 log = logging.getLogger("generate_tickers")
 
@@ -83,17 +92,140 @@ def fetch_all_sources(extra_urls: List[str] | None = None) -> List[str]:
             urls.append((f"extra_{i}", u))
 
     syms = set()
+
+    # Directory to cache per-source downloads and metadata so we can avoid
+    # re-downloading unchanged sources on subsequent runs.
+    base_dir = Path(__file__).resolve().parent.parent
+    cache_dir = base_dir / ".tickers_sources"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    meta_path = cache_dir / "meta.json"
+    try:
+        meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
+    except Exception:
+        meta = {}
+
     for name, url in urls:
-        log.info("Downloading %s from %s", name, url)
+        log.info("Processing source %s from %s", name, url)
+        local_path = cache_dir / f"{name}.txt"
+        txt = None
+        etag = None
+        lastmod = None
+        # If this is the NASDAQ-listed source and we fetched it within the
+        # last 24 hours, reuse the cached copy and skip network requests.
         try:
-            r = requests.get(url, timeout=20)
-            r.raise_for_status()
-            txt = r.text
+            if name in ("nasdaqlisted", "otherlisted"):
+                mtime = meta.get(name, {}).get("last_fetched")
+                if mtime:
+                    try:
+                        last_fetched = datetime.fromisoformat(mtime)
+                        if datetime.utcnow() - last_fetched < timedelta(hours=24):
+                            if local_path.exists():
+                                try:
+                                    txt = local_path.read_text()
+                                    log.info("%s: reused cached copy fetched %s ago", name, datetime.utcnow() - last_fetched)
+                                except Exception:
+                                    txt = None
+                            else:
+                                log.info("%s: marked fresh but no cached file present; will fetch", name)
+                    except Exception:
+                        # malformed timestamp: ignore and fetch
+                        pass
+                else:
+                    # no metadata recorded; fall back to file mtime if present
+                    try:
+                        if local_path.exists():
+                            mtime_ts = local_path.stat().st_mtime
+                            last_fetched = datetime.utcfromtimestamp(mtime_ts)
+                            if datetime.utcnow() - last_fetched < timedelta(hours=24):
+                                try:
+                                    txt = local_path.read_text()
+                                    log.info("%s: reused cached copy based on file mtime (fetched %s ago)", name, datetime.utcnow() - last_fetched)
+                                except Exception:
+                                    txt = None
+                    except Exception:
+                        pass
+        except Exception:
+            pass
+        try:
+            # Try HEAD to detect ETag/Last-Modified when possible
+            if requests is not None:
+                try:
+                    h = requests.head(url, timeout=15)
+                    if h.status_code == 200:
+                        etag = h.headers.get("ETag")
+                        lastmod = h.headers.get("Last-Modified")
+                except Exception:
+                    pass
+
+            m = meta.get(name, {})
+            # If we have matching etag/lastmod and cached file exists, reuse it
+            if local_path.exists() and (
+                (etag and m.get("etag") == etag) or (lastmod and m.get("last_modified") == lastmod)
+            ):
+                try:
+                    txt = local_path.read_text()
+                    log.info("Source %s unchanged (cached)", name)
+                except Exception:
+                    txt = None
+
+            if txt is None:
+                if requests is not None:
+                    headers = {}
+                    if m.get("etag"):
+                        headers["If-None-Match"] = m.get("etag")
+                    if m.get("last_modified"):
+                        headers["If-Modified-Since"] = m.get("last_modified")
+                    try:
+                        r = requests.get(url, timeout=20, headers=headers)
+                        if r.status_code == 304:
+                            if local_path.exists():
+                                txt = local_path.read_text()
+                                log.info("Source %s not modified (304)", name)
+                        else:
+                            r.raise_for_status()
+                            txt = r.text
+                            etag = r.headers.get("ETag") or etag
+                            lastmod = r.headers.get("Last-Modified") or lastmod
+                    except Exception as exc:
+                        log.warning("Failed to fetch %s using requests: %s", url, exc)
+                        txt = None
+                else:
+                    try:
+                        with urllib.request.urlopen(url, timeout=20) as resp:
+                            raw = resp.read()
+                            try:
+                                txt = raw.decode("utf-8")
+                            except Exception:
+                                txt = raw.decode("latin-1", errors="ignore")
+                            try:
+                                info = resp.info()
+                                lastmod = info.get("Last-Modified")
+                            except Exception:
+                                pass
+                    except Exception as exc:
+                        log.warning("Failed to download %s using urllib: %s", url, exc)
+                        txt = None
+
+            if txt:
+                try:
+                    local_path.write_text(txt)
+                except Exception:
+                    pass
+                meta[name] = {"etag": etag, "last_modified": lastmod, "url": url, "last_fetched": datetime.utcnow().isoformat()}
         except Exception as exc:
-            log.warning("Failed to download %s: %s", url, exc)
+            log.warning("Failed to process source %s: %s", name, exc)
+            continue
+
+        if not txt:
             continue
         for s in parse_symbol_text(txt):
             syms.add(s)
+
+    try:
+        meta_path.write_text(json.dumps(meta, indent=2))
+    except Exception:
+        pass
+
     return sorted(syms)
 
 
