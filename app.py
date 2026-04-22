@@ -127,12 +127,8 @@ def render_yfinance_tab() -> None:
             "Min days to expiration (DTE)", 0, 365, 7, 1, key="yf_min_dte",
             help="Minimum number of days until option expiration (DTE). Set to 0 to include options expiring today.",
         )
-        # Allow 0 to mean "all expiries"; increase upper bound to accommodate
-        # tickers with many expirations. Using 64 as a practical cap for manual
-        # selection; set to 0 to fetch the entire surface.
         yf_max_expiries = st.slider(
-            "Expiries per symbol (nearest first, 0 = all)", 0, 64, 3, 1, key="yf_max_exp",
-            help="Number of nearest expiries to fetch per symbol. Set to 0 to fetch all available expirations (entire option surface).",
+            "Expiries per symbol (nearest first)", 1, 8, 3, 1, key="yf_max_exp"
         )
         # Removed: "Symbols to scan" slider — by default scan the full S&P 500
         # (or a user-provided filter via `yf_symbol_filter` below). This avoids
@@ -285,77 +281,33 @@ def render_yfinance_tab() -> None:
     )
 
     st.subheader("Top S&P 500 option contracts (yfinance)")
-    # Prefer Streamlit's native `column_config` help tooltips when available;
-    # otherwise fall back to a compact HTML legend with title-based hover tooltips.
-    col_cfg_supported = hasattr(st, "column_config") and hasattr(st.column_config, "TextColumn")
-    if col_cfg_supported:
-        # Build column_config defensively: some Streamlit runtimes may not expose
-        # every Column class (e.g. BooleanColumn). Only include entries for
-        # constructors that exist; fall back to TextColumn where appropriate.
-        col_config = {}
-        cc = st.column_config
-        if hasattr(cc, "TextColumn"):
-            col_config["symbol"] = cc.TextColumn("Symbol", help="Underlying ticker symbol for the option contract.")
-            col_config["type"] = cc.TextColumn("Type", help="Option type: call or put.")
-            col_config["moneyness"] = cc.TextColumn("ITM/ATM/OTM", help="ITM/ATM/OTM classification relative to underlying price.")
-            col_config["expiration"] = cc.TextColumn("expiration", help="Option expiration date (YYYY-MM-DD).")
-            col_config["top_news"] = cc.TextColumn("top_news", help="Top Yahoo Finance headline for the underlying (if any).")
-            col_config["contractSymbol"] = cc.TextColumn("contractSymbol", help="Full option contract symbol used by yfinance.")
-        if hasattr(cc, "NumberColumn"):
-            col_config["underlying"] = cc.NumberColumn("spot", format="$%.2f", help="Current underlying (spot) price.")
-            col_config["strike"] = cc.NumberColumn("strike", format="$%.2f", help="Contract strike price.")
-            col_config["dte"] = cc.NumberColumn("DTE", help="Days to expiration (DTE): number of days until expiry.")
-            col_config["lastPrice"] = cc.NumberColumn("last", format="$%.2f", help="Last traded price of the option contract.")
-            col_config["bid"] = cc.NumberColumn("bid", format="$%.2f", help="Current best bid price.")
-            col_config["ask"] = cc.NumberColumn("ask", format="$%.2f", help="Current best ask price.")
-            col_config["volume"] = cc.NumberColumn("volume", help="Today’s traded volume for this contract.")
-            col_config["openInterest"] = cc.NumberColumn("openInterest", help="Open interest: number of outstanding contracts.")
-            col_config["vol_oi_ratio"] = cc.NumberColumn("vol/OI", format="%.2f", help="Volume / OpenInterest — indicates unusual activity.")
-            col_config["impliedVolatility"] = cc.NumberColumn("IV", format="%.2f", help="Implied volatility (IV) estimated from option price.")
-            col_config["percentChange"] = cc.NumberColumn("chg%", format="%.2f", help="Percent change in option price since previous close.")
-        # BooleanColumn may not exist in older Streamlit versions — fall back
-        # to TextColumn if necessary, or omit.
-        if hasattr(cc, "BooleanColumn"):
-            col_config["inTheMoney"] = cc.BooleanColumn("inTheMoney", help="Boolean flag: whether the option is currently ITM.")
-        elif hasattr(cc, "TextColumn"):
-            col_config["inTheMoney"] = cc.TextColumn("inTheMoney", help="Boolean flag: whether the option is currently ITM.")
-
-        if col_config:
-            st.dataframe(styled, use_container_width=True, hide_index=True, column_config=col_config)
-        else:
-            st.dataframe(styled, use_container_width=True, hide_index=True)
-    else:
-        # Build a compact HTML legend with title-based hover tooltips as a fallback.
-        _col_info = {
-            "symbol": "Underlying ticker symbol for the option contract.",
-            "type": "Option type: call or put.",
-            "moneyness": "ITM/ATM/OTM classification relative to underlying price.",
-            "strike": "Contract strike price.",
-            "underlying": "Current underlying (spot) price.",
-            "expiration": "Option expiration date (YYYY-MM-DD).",
-            "dte": "Days to expiration (DTE): number of days until expiry.",
-            "lastPrice": "Last traded price of the option contract.",
-            "bid": "Current best bid price.",
-            "ask": "Current best ask price.",
-            "volume": "Today’s traded volume for this contract.",
-            "openInterest": "Open interest: number of outstanding contracts.",
-            "vol_oi_ratio": "Volume / OpenInterest — indicates unusual activity.",
-            "impliedVolatility": "Implied volatility (IV) estimated from option price.",
-            "percentChange": "Percent change in option price since previous close.",
-            "inTheMoney": "Boolean flag: whether the option is currently ITM.",
-            "top_news": "Top Yahoo Finance headline for the underlying (if any).",
-            "contractSymbol": "Full option contract symbol used by yfinance.",
-        }
-        try:
-            _cols_for_legend = display_cols
-        except Exception:
-            _cols_for_legend = ["symbol", "type", "moneyness", "strike", "underlying", "expiration", "dte"]
-        _items = []
-        for _c in _cols_for_legend:
-            desc = _col_info.get(_c, "")
-            _items.append(f"<span style=\"margin-right:14px; font-size:12px; color:#222\"><strong>{_c}</strong> <span title=\"{desc}\" style=\"cursor:help;color:#6c757d\">ⓘ</span></span>")
-        st.markdown("".join(_items), unsafe_allow_html=True)
-        st.dataframe(styled, use_container_width=True, hide_index=True)
+    # Use Streamlit's native column_config descriptions so each column shows
+    # a hoverable help tooltip (if supported by the runtime). Keep descriptions concise.
+    st.dataframe(
+        styled,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "symbol": st.column_config.TextColumn("Symbol", help="Underlying ticker symbol for the option contract."),
+            "type": st.column_config.TextColumn("Type", help="Option type: call or put."),
+            "moneyness": st.column_config.TextColumn("ITM/ATM/OTM", help="ITM/ATM/OTM classification relative to underlying price."),
+            "underlying": st.column_config.NumberColumn("spot", format="$%.2f", help="Current underlying (spot) price."),
+            "strike": st.column_config.NumberColumn("strike", format="$%.2f", help="Contract strike price."),
+            "expiration": st.column_config.TextColumn("expiration", help="Option expiration date (YYYY-MM-DD)."),
+            "dte": st.column_config.NumberColumn("DTE", help="Days to expiration (DTE): number of days until expiry."),
+            "lastPrice": st.column_config.NumberColumn("last", format="$%.2f", help="Last traded price of the option contract."),
+            "bid": st.column_config.NumberColumn("bid", format="$%.2f", help="Current best bid price."),
+            "ask": st.column_config.NumberColumn("ask", format="$%.2f", help="Current best ask price."),
+            "volume": st.column_config.NumberColumn("volume", help="Today’s traded volume for this contract."),
+            "openInterest": st.column_config.NumberColumn("openInterest", help="Open interest: number of outstanding contracts."),
+            "vol_oi_ratio": st.column_config.NumberColumn("vol/OI", format="%.2f", help="Volume / OpenInterest — indicates unusual activity."),
+            "impliedVolatility": st.column_config.NumberColumn("IV", format="%.2f", help="Implied volatility (IV) estimated from option price."),
+            "percentChange": st.column_config.NumberColumn("chg%", format="%.2f", help="Percent change in option price since previous close."),
+            "inTheMoney": st.column_config.BooleanColumn("inTheMoney", help="Boolean flag: whether the option is currently ITM."),
+            "top_news": st.column_config.TextColumn("top_news", help="Top Yahoo Finance headline for the underlying (if any)."),
+            "contractSymbol": st.column_config.TextColumn("contractSymbol", help="Full option contract symbol used by yfinance."),
+        },
+    )
 
     st.subheader("Drilldown")
     labels = df_display.apply(
