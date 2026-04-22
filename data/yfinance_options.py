@@ -90,10 +90,17 @@ def _fetch_symbol_options(
     min_volume: int = 1,
     atm_pct: float = 0.01,
 ) -> pd.DataFrame:
-    """Pull the first `max_expiries` option chains for a symbol and flatten to one DF."""
+    """Pull option chains for a symbol and flatten to one DF.
+
+    If `max_expiries` is <= 0 the function will fetch all available expirations.
+    """
     try:
         tk = yf.Ticker(symbol)
-        exps = list(tk.options or [])[:max_expiries]
+        all_exps = list(tk.options or [])
+        if max_expiries is None or int(max_expiries) <= 0:
+            exps = all_exps
+        else:
+            exps = all_exps[:max_expiries]
     except Exception as exc:  # noqa: BLE001
         log.warning("yfinance.options listing failed for %s: %s", symbol, exc)
         return pd.DataFrame()
@@ -199,6 +206,9 @@ def get_top_sp500_options(
 
     `moneyness` filters to a subset of {"ITM","ATM","OTM"} (None = keep all).
     `atm_pct` is the at-the-money band as a fraction of underlying (0.01 = ±1%).
+    `max_expiries` controls how many nearest expiries to fetch per symbol; set
+    `max_expiries<=0` to fetch all available expirations from yfinance (entire
+    option surface) — note this may be slow and return a very large result set.
     `sort_by` may be a single key or an ordered list of keys (multi-column sort).
     """
     sort_cols = _resolve_sort_keys(sort_by)
