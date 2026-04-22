@@ -33,38 +33,42 @@ log = logging.getLogger("generate_tickers")
 
 # Public sources (best-effort)
 SOURCES = [
-    (
-        "nasdaqlisted",
-        "https://ftp.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt",
-    ),
-    (
-        "otherlisted",
-        "https://ftp.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt",
-    ),
+    ("nasdaqlisted", "https://ftp.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"),
+    ("otherlisted", "https://ftp.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt"),
+    # Additional public lists (best-effort). These may fail or require
+    # different parsing; the parser below handles simple pipe- or comma-delimited files.
+    ("asx", "https://www.asx.com.au/asx/research/ASXListedCompanies.csv"),
+    ("s&p500_github", "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv"),
+    ("nyse_github", "https://raw.githubusercontent.com/datasets/nyse-listed/master/data/nyse-listed.csv"),
 ]
 
 
-def fetch_symbols_from_nasdaq_text(content: str) -> Iterable[str]:
-    """Parse NASDAQ-style pipe-delimited symbol lists and yield symbols.
+def parse_symbol_text(content: str) -> Iterable[str]:
+    """Generic parser: handle pipe-delimited (nasdaq) and comma-delimited CSVs.
 
-    These files include a header row and a footer row starting with "File Creation Time".
-    We read lines between the header and footer and yield the first column (symbol).
+    Yields the likely ticker symbol from the first column of each data row.
+    Skips common header/footer lines.
     """
     out = []
     for line in content.splitlines():
         line = line.strip()
         if not line:
             continue
+        # Skip NASDAQ footer
         if line.startswith("File Creation Time"):
             break
-        if line.startswith("Symbol") or line.startswith("ACT Symbol"):
-            # header
+        # Skip obvious headers
+        if line.lower().startswith("symbol") or line.lower().startswith("act symbol") or line.lower().startswith("ticker"):
             continue
-        parts = line.split("|")
+        # Choose delimiter
+        if "|" in line:
+            parts = line.split("|")
+        else:
+            parts = line.split(",")
         if not parts:
             continue
-        sym = parts[0].strip()
-        if not sym or sym.upper() in ("NONE",):
+        sym = parts[0].strip().strip('"')
+        if not sym or sym.upper() in ("NONE", "TICKER"):
             continue
         # Normalize BRK.B -> BRK-B for yfinance compatibility
         sym = sym.replace(".", "-")
@@ -88,7 +92,7 @@ def fetch_all_sources(extra_urls: List[str] | None = None) -> List[str]:
         except Exception as exc:
             log.warning("Failed to download %s: %s", url, exc)
             continue
-        for s in fetch_symbols_from_nasdaq_text(txt):
+        for s in parse_symbol_text(txt):
             syms.add(s)
     return sorted(syms)
 
