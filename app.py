@@ -137,6 +137,13 @@ def render_yfinance_tab() -> None:
             _all_sp500 = get_sp500_symbols()
         except Exception:  # noqa: BLE001
             _all_sp500 = []
+        universe_choice = st.selectbox(
+            "Universe",
+            options=["S&P 500", "All tickers (.tickers_all.txt)"],
+            index=0,
+            key="yf_universe",
+            help="Choose the universe of tickers to scan. Use the custom file to scan any tickers supported by yfinance.",
+        )
         yf_symbol_filter = st.multiselect(
             "Filter symbols (optional)",
             options=_all_sp500,
@@ -162,13 +169,26 @@ def render_yfinance_tab() -> None:
     if yf_symbol_filter:
         symbols = list(yf_symbol_filter)
     else:
-        # By default scan the full S&P 500 list
-        symbols = all_syms
+        # Choose symbols according to universe selection
+        if universe_choice == "S&P 500":
+            symbols = all_syms
+        else:
+            from pathlib import Path
+
+            tickers_file = Path(__file__).resolve().parent.parent / ".tickers_all.txt"
+            if tickers_file.exists():
+                try:
+                    txt = tickers_file.read_text().splitlines()
+                    symbols = [s.strip().upper() for s in txt if s.strip()]
+                except Exception:
+                    st.error("Failed to read .tickers_all.txt; falling back to S&P 500")
+                    symbols = all_syms
+            else:
+                st.warning(".tickers_all.txt not found in repo root — using S&P 500 instead.")
+                symbols = all_syms
 
     status = st.empty()
-    status.info(
-        f"Fetching option chains for {len(symbols)} S&P 500 symbols via yfinance…"
-    )
+    status.info(f"Fetching option chains for {len(symbols)} symbols via yfinance…")
     progress = st.progress(0.0, text=f"Scanned 0/{len(symbols)}")
 
     def _on_progress(done: int, total: int) -> None:
@@ -280,7 +300,7 @@ def render_yfinance_tab() -> None:
         .style.map(_style_moneyness, subset=["moneyness"])
     )
 
-    st.subheader("Top S&P 500 option contracts (yfinance)")
+    st.subheader(f"Top option contracts (yfinance) — Universe: {universe_choice}")
     # Prefer Streamlit's native column_config when available; otherwise fall back
     # to a compact HTML legend. Some Streamlit runtimes may not expose all
     # column types (e.g., BooleanColumn), so detect availability dynamically.
