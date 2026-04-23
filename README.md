@@ -120,3 +120,42 @@ docker compose build --no-cache # rebuild from scratch
 <!-- Makefile targets moved to Quick start above -->
 
 
+
+## Ticker universe generation (.tickers_all.txt)
+
+This project can scan a custom universe of tickers (not just the S&P 500) by
+providing a file named `.tickers_all.txt` in the project root. The file is a
+newline-separated list of tickers (one symbol per line) that will be used when
+you select the "All tickers (.tickers_all.txt)" universe in the app.
+
+How the file is created
+- A helper script is provided at `scripts/generate_tickers_all.py` which
+  aggregates public exchange symbol lists and writes the consolidated list to
+  `.tickers_all.txt`.
+- The script caches per-source downloads under `.tickers_sources/` and records
+  metadata (ETag/Last-Modified/last_fetched) in
+  `.tickers_sources/meta.json` to avoid re-downloading unchanged sources.
+
+Runner script
+- Use `scripts/generate_tickers_runner.sh` to run the generator in a venv if
+  present, or inside the project's Docker image. This is the recommended way
+  to ensure required Python dependencies are available.
+
+Quick usage
+
+```bash
+# run generator (uses .venv/python if available, otherwise runs in Docker)
+bash scripts/generate_tickers_runner.sh
+
+# or via make (Makefile calls the runner)
+make generate-tickers
+```
+
+Notes
+- The generator will skip re-downloading heavy NASDAQ files (e.g. `nasdaqlisted`,
+  `otherlisted`) if they were fetched within the last 24 hours to reduce load.
+- The `.tickers_sources/` cache and `.tickers_all.txt` can be large; they are
+  intentionally untracked by default. If you want to commit them into the
+  repository, be aware of the size and update frequency.
+
+

@@ -1,0 +1,14 @@
+{
+  "asx": {
+    "etag": null,
+    "last_modified": null,
+    "url": "https://www.asx.com.au/asx/research/ASXListedCompanies.csv",
+    "last_fetched": "2026-04-22T20:28:39.113550"
+  },
+  "s&p500_github": {
+    "etag": "W/\"9605ed04314e8b56c4ff0b6f72a84d7d68378e28f5f3e80f42c9f27b9aa4c3e2\"",
+    "last_modified": null,
+    "url": "https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv",
+    "last_fetched": "2026-04-22T20:28:39.277818"
+  }
+}
