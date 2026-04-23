@@ -43,6 +43,9 @@ log = logging.getLogger("generate_tickers")
 # Public sources (best-effort)
 SOURCES = [
     ("nasdaqlisted", "https://ftp.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"),
+    # Include the Nasdaq Traded file which covers Global Market / Global Select
+    # listings (useful to capture additional Nasdaq Global Market symbols).
+    ("nasdaqtraded", "https://ftp.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"),
     ("otherlisted", "https://ftp.nasdaqtrader.com/dynamic/SymDir/otherlisted.txt"),
     # Additional public lists (best-effort). These may fail or require
     # different parsing; the parser below handles simple pipe- or comma-delimited files.
