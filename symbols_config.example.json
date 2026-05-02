@@ -1,0 +1,8 @@
+{
+  "_comment": "Copy this file to symbols_config.json and edit it to customise the scan universe.",
+
+  "custom_symbols": [],
+  "exclude_symbols": [],
+  "universe_size": 50
+}
+

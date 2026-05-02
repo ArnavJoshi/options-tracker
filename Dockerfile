@@ -24,14 +24,14 @@ RUN pip install -r requirements.txt
 # Copy source
 COPY app.py ./
 COPY data/ ./data/
-COPY screener/ ./screener/
+COPY all_tickers.txt ./
 
-# Persisted state (Schwab token, S&P500 cache). Mount a volume here.
+# Persisted state for generated caches. Mount a volume here.
 RUN mkdir -p /app/.cache
 VOLUME ["/app/.cache"]
 
-# Streamlit (8501) + Schwab OAuth callback (8182)
-EXPOSE 8501 8182
+# Streamlit dashboard
+EXPOSE 8501
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
     CMD curl -fsS http://localhost:8501/_stcore/health || exit 1
