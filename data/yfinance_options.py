@@ -27,6 +27,7 @@ _OPTIONABLE_CACHE_TTL_SECONDS = 24 * 60 * 60  # re-check once per day
 _cache: TTLCache = TTLCache(maxsize=16, ttl=5 * 60)  # 5 min
 _contract_history_cache: TTLCache = TTLCache(maxsize=20_000, ttl=30 * 60)
 _expiries_cache: TTLCache = TTLCache(maxsize=20_000, ttl=7 * 24 * 60 * 60)
+_stock_zscore_cache: TTLCache = TTLCache(maxsize=5_000, ttl=30 * 60)
 
 _KEEP_COLS = [
     "symbol",
@@ -71,6 +72,34 @@ def _get_underlying_price(tk: "yf.Ticker") -> float:
     except Exception:  # noqa: BLE001
         pass
     return 0.0
+
+
+def _get_stock_zscore(symbol: str, window: int = 20) -> Optional[float]:
+    """Return the z-score of the current closing price vs. the last `window` trading days.
+
+    z = (close_today - mean(closes[-window:])) / std(closes[-window:])
+
+    A positive z-score means the stock is trading above its recent average;
+    negative means below.  Returns None on fetch failure.
+    """
+    if symbol in _stock_zscore_cache:
+        return _stock_zscore_cache[symbol]
+
+    zscore: Optional[float] = None
+    try:
+        hist = yf.Ticker(symbol).history(period=f"{window + 10}d", interval="1d")
+        if hist is not None and not hist.empty and "Close" in hist.columns:
+            closes = hist["Close"].dropna().tail(window)
+            if len(closes) >= 2:
+                mean = float(closes.mean())
+                std = float(closes.std())
+                if std > 0:
+                    zscore = round((float(closes.iloc[-1]) - mean) / std, 3)
+    except Exception as exc:  # noqa: BLE001
+        log.debug("stock zscore fetch failed for %s: %s", symbol, exc)
+
+    _stock_zscore_cache[symbol] = zscore
+    return zscore
 
 
 def _classify_moneyness(
@@ -519,6 +548,21 @@ def get_top_options(
         )
 
     out = df.head(top_n).reset_index(drop=True)
+
+    # ── Stock z-score (current price vs 20-day history) ─────────────────────
+    unique_syms = out["symbol"].unique().tolist()
+    zscore_map: dict[str, Optional[float]] = {}
+    with ThreadPoolExecutor(max_workers=min(_workers, len(unique_syms) or 1)) as ex:
+        fs = {ex.submit(_get_stock_zscore, sym): sym for sym in unique_syms}
+        for fut in as_completed(fs):
+            sym = fs[fut]
+            try:
+                zscore_map[sym] = fut.result()
+            except Exception as exc:  # noqa: BLE001
+                log.debug("zscore worker failed for %s: %s", sym, exc)
+                zscore_map[sym] = None
+    out["stock_zscore"] = out["symbol"].map(zscore_map)
+
     out.attrs["prefilter_stats"] = prefilter_stats
     _cache[cache_key] = out
     return out

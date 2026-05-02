@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import streamlit as st
 from dotenv import load_dotenv
 
+from data.config import symbols_config, reload as reload_symbols_config
 from data.news_client import get_company_news
 from data.tickers import get_ticker_symbols
 from data.yfinance_options import get_optionable_symbols, get_top_options
@@ -33,7 +34,8 @@ if not hasattr(st, "pills"):
 log = logging.getLogger(__name__)
 
 # Keep the default scan universe small for speed/responsiveness.
-DEFAULT_OPTIONABLE_UNIVERSE = 50
+# Can be overridden via symbols_config.json → "universe_size".
+DEFAULT_OPTIONABLE_UNIVERSE = symbols_config.universe_size
 
 def render_yfinance_tab() -> None:
     """Render the yfinance top options tab and its sidebar controls."""
@@ -46,6 +48,14 @@ def render_yfinance_tab() -> None:
         with st.sidebar:
             st.header("yfinance Top Options")
             st.info("⏳ Identifying symbols with listed options…\nThis runs once and is cached for 24 h.")
+        # If symbols_config.json specifies custom_symbols, skip the slow scan entirely.
+        if symbols_config.has_custom_symbols:
+            custom = symbols_config.apply_excludes(symbols_config.custom_symbols)
+            st.session_state["optionable_symbols"] = custom
+            st.session_state["all_syms"] = custom
+            st.session_state["_config_override"] = True
+            st.rerun()
+            return
         with st.spinner("Checking which symbols have listed options — cached for 24 h, please wait…"):
             try:
                 all_syms = get_ticker_symbols()
@@ -54,6 +64,7 @@ def render_yfinance_tab() -> None:
                 log.warning("get_optionable_symbols failed, falling back to full list: %s", exc)
                 all_syms = get_ticker_symbols()
                 optionable = all_syms
+            optionable = symbols_config.apply_excludes(optionable)
             st.session_state["optionable_symbols"] = optionable
             st.session_state["all_syms"] = all_syms
         st.rerun()
@@ -65,7 +76,13 @@ def render_yfinance_tab() -> None:
 
     with st.sidebar:
         st.header("yfinance Top Options")
-        st.caption(f"🔎 {len(optionable):,} of {len(all_syms):,} symbols have listed options")
+        _config_override = st.session_state.get("_config_override", False)
+        if _config_override:
+            st.success(
+                f"📋 Custom list active — **{len(optionable)} symbols** from `symbols_config.json`"
+            )
+        else:
+            st.caption(f"🔎 {len(optionable):,} of {len(all_syms):,} symbols have listed options")
         yf_universe_size = st.slider(
             "Optionable symbols to scan",
             min_value=1,
@@ -73,11 +90,17 @@ def render_yfinance_tab() -> None:
             value=min(DEFAULT_OPTIONABLE_UNIVERSE, max(1, len(optionable))),
             step=1,
             key="yf_universe_size",
-            help="When no custom symbol filter is selected, scan the first N optionable symbols.",
+            help="When no custom symbol filter is selected, scan the first N optionable symbols. Set custom_symbols in symbols_config.json to pin a fixed list.",
+            disabled=_config_override,
         )
-        if st.button("🔄 Refresh symbol list", help="Force re-check which symbols have listed options (clears the 24 h cache)"):
+        if st.button(
+            "🔄 Refresh symbol list",
+            help="Re-checks optionable symbols and reloads symbols_config.json",
+        ):
+            reload_symbols_config()
             del st.session_state["optionable_symbols"]
             st.session_state.pop("all_syms", None)
+            st.session_state.pop("_config_override", None)
             st.rerun()
         yf_top_n = st.slider("Top N contracts", 10, 300, 300, 10, key="yf_top_n")
         yf_sort_by = st.multiselect(
@@ -252,13 +275,16 @@ def render_yfinance_tab() -> None:
         )
 
     display_cols = [
-        "symbol", "type", "moneyness", "strike", "underlying", "expiration",
+        "symbol", "type", "moneyness", "strike", "underlying", "stock_zscore", "expiration",
         "dte",
         "lastPrice", "bid", "ask",
         "volume", "previousDayVolume", "vol_prev_day_ratio", "openInterest", "vol_oi_ratio",
         "impliedVolatility", "percentChange",
         "inTheMoney", "top_news", "contractSymbol",
     ]
+    # stock_zscore may be missing if the column wasn't returned (e.g. cache hit from old run)
+    if "stock_zscore" not in df_display.columns:
+        df_display["stock_zscore"] = None
     styled = (
         df_display[display_cols]
         .style.map(_style_moneyness, subset=["moneyness"])
@@ -283,6 +309,7 @@ def render_yfinance_tab() -> None:
         # NumberColumn entries
         if hasattr(cc, "NumberColumn"):
             col_config["underlying"] = cc.NumberColumn("spot", format="$%.2f", help="Current underlying (spot) price.")
+            col_config["stock_zscore"] = cc.NumberColumn("z-score", format="%.2f", help="Stock price z-score: how many std deviations today's close is from its 20-day mean. Positive = above average, negative = below.")
             col_config["strike"] = cc.NumberColumn("strike", format="$%.2f", help="Contract strike price.")
             col_config["dte"] = cc.NumberColumn("DTE", help="Days to expiration (DTE): number of days until expiry.")
             col_config["lastPrice"] = cc.NumberColumn("last", format="$%.2f", help="Last traded price of the option contract.")
@@ -312,6 +339,7 @@ def render_yfinance_tab() -> None:
                 "moneyness": "ITM/ATM/OTM classification relative to underlying price.",
                 "strike": "Contract strike price.",
                 "underlying": "Current underlying (spot) price.",
+                "stock_zscore": "Stock price z-score vs. 20-day history (std deviations from mean).",
                 "expiration": "Option expiration date (YYYY-MM-DD).",
                 "dte": "Days to expiration (DTE): number of days until expiry.",
                 "lastPrice": "Last traded price of the option contract.",
@@ -346,6 +374,7 @@ def render_yfinance_tab() -> None:
             "moneyness": "ITM/ATM/OTM classification relative to underlying price.",
             "strike": "Contract strike price.",
             "underlying": "Current underlying (spot) price.",
+            "stock_zscore": "Stock price z-score vs. 20-day history (std deviations from mean).",
             "expiration": "Option expiration date (YYYY-MM-DD).",
             "dte": "Days to expiration (DTE): number of days until expiry.",
             "lastPrice": "Last traded price of the option contract.",
