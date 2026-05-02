@@ -1,0 +1,2508 @@
+[
+  {
+    "label": "GovVolta-18543.0",
+    "type": "bart_release",
+    "owners": [
+      "mvanhorn",
+      "ddombros"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering",
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Cloud Experience Engineering",
+      "SRE Edge Experience"
+    ],
+    "uuid": "015f3479-f9b2-4101-abba-7d9a3ac628f9",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 8,
+          "high": 1333,
+          "medium": 4406,
+          "low": 1440,
+          "total": 7187
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2025-03-18T18:54:49.569000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2014-9654",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18543",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mvanhorn",
+      "technicalLead": "ddombros",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "INGEST-18454.0",
+    "type": "bart_release",
+    "owners": [
+      "tchandra",
+      "aypandey"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Apps Engineering"
+    ],
+    "uuid": "09bc336c-8b9a-4c6d-9464-fb9f59aba09b",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 3,
+          "high": 1496,
+          "medium": 3891,
+          "low": 1416,
+          "total": 6806
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 0,
+          "high": 12,
+          "medium": 27,
+          "low": 7,
+          "total": 46
+        },
+        "scanId": "10451",
+        "repository": "SQA Lab",
+        "refScanName": "INGEST-18454-SQA"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18454",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "tchandra",
+      "technicalLead": "aypandey",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSC2S-18467.0",
+    "type": "bart_release",
+    "owners": [
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "1546df25-8af8-497e-8e1d-e22bb2ed8561",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 48,
+          "high": 1731,
+          "medium": 3837,
+          "low": 1255,
+          "total": 6871
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18467",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GovMetanet-18511.0",
+    "type": "bart_release",
+    "owners": [
+      "adajala",
+      "cwhite"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Experience Quality Engineering",
+      "Edge Servers"
+    ],
+    "uuid": "15eebb8f-4936-4f44-a7e5-26d2ace56b92",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 5,
+          "high": 2628,
+          "medium": 8606,
+          "low": 2929,
+          "total": 14168
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 12,
+          "medium": 23,
+          "low": 7,
+          "total": 43
+        },
+        "scanId": "11555",
+        "repository": "SQA - DefenseEdge SOR",
+        "refScanName": "GovMetanet-18511 SQA Shared"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18511",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "cwhite",
+      "technicalLead": "adajala",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSMETANET-18490.0",
+    "type": "bart_release",
+    "owners": [
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "20c60e60-4781-4310-a121-079cab7e69d9",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 33,
+          "high": 1706,
+          "medium": 4087,
+          "low": 1284,
+          "total": 7110
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18490",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "SDN-18019.0",
+    "type": "bart_release",
+    "owners": [
+      "mtomalsk",
+      "pwydrych"
+    ],
+    "businessUnit": [
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Network Software Engineering"
+    ],
+    "uuid": "21fa5c09-c7d9-4ad2-834d-a50e164e8341",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 5,
+          "high": 1017,
+          "medium": 3084,
+          "low": 1087,
+          "total": 5193
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2024-05-08T05:50:26.838000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2019-20933",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18019",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "pwydrych",
+      "technicalLead": "mtomalsk",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "MTS-18720.0",
+    "type": "bart_release",
+    "owners": [
+      "tchandra",
+      "aypandey"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Apps Engineering"
+    ],
+    "uuid": "260e8fa8-3295-490d-ae4c-d443b97acf95",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 2,
+          "high": 1473,
+          "medium": 3857,
+          "low": 1377,
+          "total": 6709
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 4,
+          "high": 24,
+          "medium": 44,
+          "low": 11,
+          "total": 83
+        },
+        "scanId": "11407",
+        "repository": "SQA Lab",
+        "refScanName": "MTS-18720-SAQ"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18720",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "tchandra",
+      "technicalLead": "aypandey",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSMTS-18798.0",
+    "type": "bart_release",
+    "owners": [
+      "kkc",
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "2942eb51-25c4-4b73-8348-7bf061d7aec6",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 34,
+          "high": 1660,
+          "medium": 3742,
+          "low": 1239,
+          "total": 6675
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18798",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Nevada-18676.0",
+    "type": "bart_release",
+    "owners": [
+      "kpanta",
+      "sranjan"
+    ],
+    "businessUnit": [
+      "Zero Trust Security"
+    ],
+    "costCenter": [
+      "Microsegmentation - Engineering"
+    ],
+    "uuid": "2b5386c0-2959-419e-9a48-067861d6af19",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 32,
+          "high": 3457,
+          "medium": 9675,
+          "low": 3094,
+          "total": 16258
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2021-03-13T03:00:08.020689",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2016-0158",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18676",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kpanta",
+      "technicalLead": "sranjan",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "DDC-18782.0",
+    "type": "bart_release",
+    "owners": [
+      "nserrao",
+      "mfudim"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Data Services"
+    ],
+    "uuid": "2e95b0ab-6890-4b23-9810-bd78baf02973",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 1030,
+          "medium": 3261,
+          "low": 1203,
+          "total": 5494
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 3,
+          "high": 23,
+          "medium": 18,
+          "low": 6,
+          "total": 50
+        },
+        "scanId": "11893",
+        "repository": "SQA - Non-FedRAMP Networks",
+        "refScanName": "DDC-18782-20-Apr-2026-stalukda"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18782",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mfudim",
+      "technicalLead": "nserrao",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Platform-BRAVE-9345.0",
+    "type": "bart_release",
+    "owners": [],
+    "businessUnit": [],
+    "costCenter": [],
+    "uuid": "32e973e3-e87e-487c-bb33-ee0cc8764809",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 44,
+          "high": 706,
+          "medium": 1627,
+          "low": 338,
+          "total": 2715
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2021-03-13T03:00:08.020689",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2017-0810",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "9345",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "",
+      "technicalLead": "",
+      "isLatestCompleted": true
+    },
+    "isOrphan": true
+  },
+  {
+    "label": "NetMgmt-18747.0",
+    "type": "bart_release",
+    "owners": [
+      "vrossi",
+      "mvanhorn"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Experience Engineering",
+      "Cloud Experience Quality Engineering"
+    ],
+    "uuid": "3b87bbbf-1718-448c-9366-278fd60e329c",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 71,
+          "high": 3021,
+          "medium": 14754,
+          "low": 4354,
+          "total": 22200
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2024-02-23T22:29:09.339970",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2024-1597",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 2,
+          "high": 18,
+          "medium": 15,
+          "low": 4,
+          "total": 39
+        },
+        "scanId": "11831",
+        "repository": "SQA Lab",
+        "refScanName": "NetMgmt-18747"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18747",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mvanhorn",
+      "technicalLead": "vrossi",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "COBRA-18736.0",
+    "type": "bart_release",
+    "owners": [
+      "ssajithk",
+      "mlittle"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Storage",
+      "Compute Engineering Management"
+    ],
+    "uuid": "40bc1559-1c8a-4315-80e6-e36d8ae72109",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 9,
+          "high": 1002,
+          "medium": 3066,
+          "low": 1197,
+          "total": 5274
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-14T03:00:34.037929",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2014-9654",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 25,
+          "medium": 45,
+          "low": 10,
+          "total": 81
+        },
+        "scanId": "11618",
+        "repository": "SQA Lab",
+        "refScanName": "COBRA-18736-NSOS-BE-MAR-30"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18736",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ssajithk",
+      "technicalLead": "mlittle",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Akanote-18723.0",
+    "type": "bart_release",
+    "owners": [
+      "rrajesh",
+      "ajathann"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Data Services"
+    ],
+    "uuid": "42e646cb-433e-43c2-aff9-5d603e633387",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 752,
+          "medium": 2499,
+          "low": 938,
+          "total": 4189
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2018-13420",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 2,
+          "high": 22,
+          "medium": 22,
+          "low": 3,
+          "total": 49
+        },
+        "scanId": "11950",
+        "repository": "SQA - Non-FedRAMP Networks",
+        "refScanName": "Akanote-18723"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18723",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ajathann",
+      "technicalLead": "rrajesh",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "SCRUB-18613.1",
+    "type": "bart_release",
+    "owners": [
+      "bpetrecc",
+      "jleddy"
+    ],
+    "businessUnit": [
+      "Infrastructure Security"
+    ],
+    "costCenter": [
+      "Infrastructure Security Engineering"
+    ],
+    "uuid": "483861cb-ab73-4711-8bb1-407dbf9f3830",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 7,
+          "high": 1751,
+          "medium": 5623,
+          "low": 1597,
+          "total": 8978
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2024-07-24T16:29:08.352198",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2024-1153",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18613",
+      "status": "Complete",
+      "numberInc": "1",
+      "releaseLead": "jleddy",
+      "technicalLead": "bpetrecc",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "DART-18612.0",
+    "type": "bart_release",
+    "owners": [
+      "sfathall",
+      "bpetrecc"
+    ],
+    "businessUnit": [
+      "Infrastructure Security"
+    ],
+    "costCenter": [
+      "Infrastructure Security Engineering"
+    ],
+    "uuid": "493e8b47-4ec8-41ac-a5a2-3c36006ae78c",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 37,
+          "high": 1872,
+          "medium": 6891,
+          "low": 1612,
+          "total": 10412
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2023-12-09T04:29:10.359702",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2023-35853",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18612",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "sfathall",
+      "technicalLead": "bpetrecc",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Volta-18542.0",
+    "type": "bart_release",
+    "owners": [
+      "ddombros",
+      "mvanhorn"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering",
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Cloud Experience Engineering",
+      "SRE Edge Experience"
+    ],
+    "uuid": "4dc19101-07ab-469f-99e0-033531198ebc",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 8,
+          "high": 1333,
+          "medium": 4404,
+          "low": 1440,
+          "total": 7185
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2025-03-18T18:54:49.569000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2014-9654",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 4,
+          "high": 20,
+          "medium": 38,
+          "low": 7,
+          "total": 69
+        },
+        "scanId": "11154",
+        "repository": "SQA Lab",
+        "refScanName": "Volta-18542"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18542",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mvanhorn",
+      "technicalLead": "ddombros",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "FF-18850.0",
+    "type": "bart_release",
+    "owners": [
+      "stmcinty",
+      "chbernar"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Servers"
+    ],
+    "uuid": "558052a0-f3ab-4907-afcb-a2acf6d05531",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 2,
+          "high": 1593,
+          "medium": 4310,
+          "low": 1455,
+          "total": 7360
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 3,
+          "high": 25,
+          "medium": 19,
+          "low": 4,
+          "total": 51
+        },
+        "scanId": "11883",
+        "repository": "SQA Lab",
+        "refScanName": "FF-18850-2026"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18850",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "chbernar",
+      "technicalLead": "stmcinty",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Infra-18817.0",
+    "type": "bart_release",
+    "owners": [
+      "macieszy",
+      "jlida"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Data Services"
+    ],
+    "uuid": "56441fc2-6385-465f-8bf8-dce4339b2ac9",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 24,
+          "high": 2121,
+          "medium": 6713,
+          "low": 2164,
+          "total": 11022
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2024-08-30T14:06:30.956000",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2019-4008",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18817",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "jlida",
+      "technicalLead": "macieszy",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "NETVIEW-18712.0",
+    "type": "bart_release",
+    "owners": [
+      "maolson",
+      "maroman"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Custom Analytics"
+    ],
+    "uuid": "58711a21-36b0-430f-84dc-76d0d440887f",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 6,
+          "high": 1080,
+          "medium": 3539,
+          "low": 1109,
+          "total": 5734
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2024-08-14T04:29:05.277992",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2022-45378",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18712",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "maolson",
+      "technicalLead": "maroman",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "gecko-18413.1",
+    "type": "bart_release",
+    "owners": [
+      "ilubashe",
+      "dsagaman"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering",
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Cloud Platform Infrastructure",
+      "SRE Compute"
+    ],
+    "uuid": "5afae69d-8b9f-4885-96f3-a31437a9f0e4",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 14,
+          "high": 1132,
+          "medium": 3511,
+          "low": 1111,
+          "total": 5768
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2025-01-13T17:44:16.204000",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2019-2511",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18413",
+      "status": "Complete",
+      "numberInc": "1",
+      "releaseLead": "ilubashe",
+      "technicalLead": "dsagaman",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "QUILL-18550.0",
+    "type": "bart_release",
+    "owners": [
+      "panair",
+      "mhorcick"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Servers"
+    ],
+    "uuid": "655cf274-4ade-4e92-a8f2-a954631abb41",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 831,
+          "medium": 2787,
+          "low": 1018,
+          "total": 4636
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18550",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mhorcick",
+      "technicalLead": "panair",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GovDDC-18789.0",
+    "type": "bart_release",
+    "owners": [
+      "jallain",
+      "mfudim"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Data Services"
+    ],
+    "uuid": "671a7550-112d-465c-91d9-a00006b2368f",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 784,
+          "medium": 2571,
+          "low": 988,
+          "total": 4343
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2018-13420",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 0,
+          "high": 11,
+          "medium": 13,
+          "low": 3,
+          "total": 27
+        },
+        "scanId": "11765",
+        "repository": "SQA Lab",
+        "refScanName": "GovDDC-18789"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18789",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mfudim",
+      "technicalLead": "jallain",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "MetaNet-18500.0",
+    "type": "bart_release",
+    "owners": [
+      "adajala",
+      "cwhite"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Experience Quality Engineering",
+      "Edge Servers"
+    ],
+    "uuid": "6b2107c5-74ec-43a3-a7a4-196da635a706",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 5,
+          "high": 2628,
+          "medium": 8610,
+          "low": 2930,
+          "total": 14173
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 11,
+          "medium": 22,
+          "low": 7,
+          "total": 41
+        },
+        "scanId": "11515",
+        "repository": "SQA Lab",
+        "refScanName": "Metanet-18500 SQA shared"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18500",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "cwhite",
+      "technicalLead": "adajala",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Platform-ESSL-18308.0",
+    "type": "bart_release",
+    "owners": [
+      "echo",
+      "astsharm"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Servers"
+    ],
+    "uuid": "6ca7707b-8d11-4099-97d3-4344c388d754",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 2,
+          "high": 2122,
+          "medium": 5765,
+          "low": 1984,
+          "total": 9873
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18308",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "echo",
+      "technicalLead": "astsharm",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Odin-18475.0",
+    "type": "bart_release",
+    "owners": [
+      "jmushlin",
+      "jedwards"
+    ],
+    "businessUnit": [
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Empowerment Tools & Automation"
+    ],
+    "uuid": "719bdfd4-ee5e-47e1-aa7e-b9305c501d45",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 126,
+          "high": 4624,
+          "medium": 13789,
+          "low": 4039,
+          "total": 22578
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-13T03:00:08.020689",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2018-1213",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 3,
+          "high": 28,
+          "medium": 23,
+          "low": 5,
+          "total": 59
+        },
+        "scanId": "11629",
+        "repository": "SQA Lab",
+        "refScanName": "Odin-18475 FRM"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18475",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "jedwards",
+      "technicalLead": "jmushlin",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSESSL-18469.0",
+    "type": "bart_release",
+    "owners": [
+      "kkc",
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "732818d2-f77e-478d-985d-a5b7a70e98ff",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 21,
+          "high": 3521,
+          "medium": 7833,
+          "low": 2413,
+          "total": 13788
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18469",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Mobile-18831.0",
+    "type": "bart_release",
+    "owners": [
+      "ananner",
+      "kflindal"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Apps Engineering"
+    ],
+    "uuid": "77ca35c2-583d-4f08-b7d2-696d12dfffc8",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 869,
+          "medium": 2919,
+          "low": 1061,
+          "total": 4849
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18831",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ananner",
+      "technicalLead": "kflindal",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "Crypto-18639.1",
+    "type": "bart_release",
+    "owners": [
+      "diwakg",
+      "panair"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Servers"
+    ],
+    "uuid": "7b3b3d9f-bd84-445d-9a3e-96d4c5e23010",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 1298,
+          "medium": 7794,
+          "low": 2378,
+          "total": 11470
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18639",
+      "status": "Complete",
+      "numberInc": "1",
+      "releaseLead": "diwakg",
+      "technicalLead": "panair",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSCOBRA-18468.0",
+    "type": "bart_release",
+    "owners": [
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "7f097262-0010-40a2-a52a-34b9568d48ef",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 49,
+          "high": 2064,
+          "medium": 4069,
+          "low": 1359,
+          "total": 7541
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18468",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSDDC-18466.0",
+    "type": "bart_release",
+    "owners": [
+      "lsaintz",
+      "kkc"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "8315ef0e-b85b-4536-a552-80e6e52d90e0",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 100,
+          "high": 3371,
+          "medium": 6500,
+          "low": 1899,
+          "total": 11870
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-13T03:00:08.020689",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-3191",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18466",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "BRAVE-18645.0",
+    "type": "bart_release",
+    "owners": [
+      "awarlock",
+      "arombesh"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Mapping Engineering"
+    ],
+    "uuid": "861d5490-3331-44e9-8844-1f8e5b6fbea8",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 820,
+          "medium": 2727,
+          "low": 1008,
+          "total": 4555
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 17,
+          "medium": 28,
+          "low": 7,
+          "total": 53
+        },
+        "scanId": "11725",
+        "repository": "SQA - Non-FedRAMP Networks",
+        "refScanName": "Brave-18645"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18645",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "awarlock",
+      "technicalLead": "arombesh",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "CMSO-18860.0",
+    "type": "bart_release",
+    "owners": [
+      "agutowsk",
+      "stanneer"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Apps Engineering"
+    ],
+    "uuid": "873ec64c-ac39-407e-906c-572d7af8fe3e",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 3,
+          "high": 928,
+          "medium": 2984,
+          "low": 1068,
+          "total": 4983
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 3,
+          "high": 31,
+          "medium": 21,
+          "low": 4,
+          "total": 59
+        },
+        "scanId": "11910",
+        "repository": "SQA Lab",
+        "refScanName": "CMSO-18860"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18860",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "agutowsk",
+      "technicalLead": "stanneer",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "CHIVE-16951.0",
+    "type": "bart_release",
+    "owners": [
+      "ilubashe",
+      "dsagaman"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering",
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Cloud Platform Infrastructure",
+      "SRE Compute"
+    ],
+    "uuid": "9e7f1b9e-e972-4e2d-989f-c19d7a5350f6",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 19,
+          "high": 2066,
+          "medium": 5358,
+          "low": 1798,
+          "total": 9241
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-01-19T18:49:28.118000",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2016-0054",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "16951",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ilubashe",
+      "technicalLead": "dsagaman",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "NAMES-16823.1",
+    "type": "bart_release",
+    "owners": [
+      "sthorne",
+      "alonardo"
+    ],
+    "businessUnit": [
+      "Infrastructure Security"
+    ],
+    "costCenter": [
+      "DNSi - Engineering"
+    ],
+    "uuid": "9fd0c24e-0db8-49f7-9450-bab644c74cc9",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 1255,
+          "medium": 3979,
+          "low": 1389,
+          "total": 6623
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "16823",
+      "status": "Complete",
+      "numberInc": "1",
+      "releaseLead": "sthorne",
+      "technicalLead": "alonardo",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSODIN-18521.0",
+    "type": "bart_release",
+    "owners": [
+      "kkc",
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "a18fc70f-a017-4073-a89e-f8c8dfd2d568",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 40,
+          "high": 1986,
+          "medium": 5273,
+          "low": 1541,
+          "total": 8840
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2022-04-14T09:29:57.311000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2022-0525",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18521",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "FEO-18455.0",
+    "type": "bart_release",
+    "owners": [
+      "ananner",
+      "risidh"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Apps Engineering"
+    ],
+    "uuid": "a213f7a8-1fc7-4a9e-97c6-54067fac367d",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 1032,
+          "medium": 3185,
+          "low": 1114,
+          "total": 5331
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18455",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ananner",
+      "technicalLead": "risidh",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSNESS-18450.0",
+    "type": "bart_release",
+    "owners": [
+      "kkc",
+      "lsaintz"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "a6c91d89-661b-44d6-a38c-0e8585e4b6ef",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 29,
+          "high": 4931,
+          "medium": 13049,
+          "low": 4387,
+          "total": 22396
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18450",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "gspinfra-18049.0",
+    "type": "bart_release",
+    "owners": [
+      "mahollan",
+      "foprea"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering",
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Cloud Technology Architecture",
+      "SRE Edge Apps & Networking"
+    ],
+    "uuid": "a95addb0-37c0-43c1-9a85-98ac384c4fa6",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 13,
+          "high": 1673,
+          "medium": 4111,
+          "low": 1409,
+          "total": 7206
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-12-08T17:40:59.488000",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2019-4008",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18049",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mahollan",
+      "technicalLead": "foprea",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "UCDSESSL-8573.0",
+    "type": "bart_release",
+    "owners": [
+      "jbonci",
+      "apsaltis"
+    ],
+    "businessUnit": [],
+    "costCenter": [],
+    "uuid": "aefdd7e3-817a-4140-9a3e-5a8898338e86",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 21,
+          "high": 241,
+          "medium": 528,
+          "low": 61,
+          "total": 851
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2021-03-13T03:00:08.020689",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-4606",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "8573",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "jbonci",
+      "technicalLead": "apsaltis",
+      "isLatestCompleted": true
+    },
+    "isOrphan": true
+  },
+  {
+    "label": "NESS-18397.0",
+    "type": "bart_release",
+    "owners": [
+      "vrossi",
+      "jkociaj"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Experience Quality Engineering",
+      "Security Architecture and Engineering"
+    ],
+    "uuid": "bb5a2fc8-76d0-4623-8ff5-ff9f2d4c4038",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 5,
+          "high": 4007,
+          "medium": 12438,
+          "low": 4346,
+          "total": 20796
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 15,
+          "medium": 17,
+          "low": 6,
+          "total": 39
+        },
+        "scanId": "11753",
+        "repository": "SQA Lab",
+        "refScanName": "NESS-18397- SQA2 1 IP of each role"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18397",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "jkociaj",
+      "technicalLead": "vrossi",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "SRIP-18193.0",
+    "type": "bart_release",
+    "owners": [
+      "bpetrecc",
+      "jleddy"
+    ],
+    "businessUnit": [
+      "Infrastructure Security"
+    ],
+    "costCenter": [
+      "Infrastructure Security Engineering"
+    ],
+    "uuid": "c816ce55-656e-4da7-b6e9-ba9c2bcb95f3",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 1115,
+          "medium": 3344,
+          "low": 1140,
+          "total": 5599
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18193",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "jleddy",
+      "technicalLead": "bpetrecc",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "C2S-18694.0",
+    "type": "bart_release",
+    "owners": [
+      "ssajithk",
+      "mlittle"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Storage",
+      "Compute Engineering Management"
+    ],
+    "uuid": "c88fe8ab-864b-44a1-aa24-8f5a0914424a",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 0,
+          "high": 1639,
+          "medium": 5681,
+          "low": 2136,
+          "total": 9456
+        },
+        "lastScanDate": null,
+        "worstSeverity": "HIGH",
+        "slaDays": 30,
+        "slaStartDate": "2021-03-16T03:00:29.274852",
+        "isExempted": null,
+        "vulnIdentifier": "BDSA-2022-2930",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 8,
+          "medium": 18,
+          "low": 5,
+          "total": 32
+        },
+        "scanId": "11410",
+        "repository": "SQA Lab",
+        "refScanName": "C2S-18694-SSUITE-ALSI-22"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18694",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ssajithk",
+      "technicalLead": "mlittle",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "MC-18404.0",
+    "type": "bart_release",
+    "owners": [
+      "arombesh",
+      "mlohner"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Mapping Engineering"
+    ],
+    "uuid": "c8ffc171-a5b9-4798-a6bb-9810eadcbcc6",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 6,
+          "high": 2277,
+          "medium": 6771,
+          "low": 2308,
+          "total": 11362
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 0,
+          "high": 13,
+          "medium": 26,
+          "low": 6,
+          "total": 45
+        },
+        "scanId": "11371",
+        "repository": "SQA - Non-FedRAMP Networks",
+        "refScanName": "MC-18404"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18404",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "mlohner",
+      "technicalLead": "arombesh",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "DNA-18729.0",
+    "type": "bart_release",
+    "owners": [
+      "ajathann",
+      "rrajesh"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Cloud Data Services"
+    ],
+    "uuid": "d53bfc42-0573-4e9b-b2b7-c95823232d4b",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 4,
+          "high": 1191,
+          "medium": 3104,
+          "low": 1078,
+          "total": 5377
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 60,
+        "slaStartDate": "2024-11-04T06:19:51.725000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2022-45378",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 1,
+          "high": 1,
+          "medium": 2,
+          "low": 0,
+          "total": 4
+        },
+        "scanId": "11823",
+        "repository": "SQA - Non-FedRAMP Networks",
+        "refScanName": "DNA-18729"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18729",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ajathann",
+      "technicalLead": "rrajesh",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "ESSL-18709.1",
+    "type": "bart_release",
+    "owners": [
+      "chbernar",
+      "stmcinty"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "Edge Servers"
+    ],
+    "uuid": "e13e2980-7056-4632-a3e4-a00aae4cf41b",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 2,
+          "high": 1633,
+          "medium": 4510,
+          "low": 1538,
+          "total": 7683
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2023-02-16T06:32:00.471000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2016-2099",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18709",
+      "status": "Complete",
+      "numberInc": "1",
+      "releaseLead": "chbernar",
+      "technicalLead": "stmcinty",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSINGEST-18488.0",
+    "type": "bart_release",
+    "owners": [
+      "lsaintz",
+      "kkc"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "e3eb3583-4afc-494c-9b43-c893e69c1c0b",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 33,
+          "high": 1643,
+          "medium": 3830,
+          "low": 1229,
+          "total": 6735
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18488",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "EdgeCloud-18095.0",
+    "type": "bart_release",
+    "owners": [
+      "dsagaman",
+      "ilubashe"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering",
+      "Infrastructure Engineering & Operations"
+    ],
+    "costCenter": [
+      "Cloud Platform Infrastructure",
+      "SRE Compute"
+    ],
+    "uuid": "ec88a777-2b5b-455d-aa53-2da964c42b6c",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 42,
+          "high": 2761,
+          "medium": 7393,
+          "low": 2502,
+          "total": 12698
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2022-04-14T09:29:57.311000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2022-0525",
+        "vulnCompliance": []
+      },
+      {
+        "source": "TENABLE",
+        "counts": {
+          "critical": 7,
+          "high": 20,
+          "medium": 23,
+          "low": 4,
+          "total": 54
+        },
+        "scanId": "9090",
+        "repository": "SQA Lab",
+        "refScanName": "EdgeCloud-18095",
+        "lastScanDate": "2025-07-29T19:05:22.000000"
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18095",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "ilubashe",
+      "technicalLead": "dsagaman",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  },
+  {
+    "label": "GCDSVOLTA-18526.0",
+    "type": "bart_release",
+    "owners": [
+      "lsaintz",
+      "kkc"
+    ],
+    "businessUnit": [
+      "CTG Architecture & Engineering"
+    ],
+    "costCenter": [
+      "CTG Public Sector Engineering"
+    ],
+    "uuid": "fe3001c5-feda-4454-ae85-f09884cd2ef1",
+    "assetSource": "bart",
+    "vulnMetrics": [
+      {
+        "source": "osv",
+        "counts": {
+          "critical": 41,
+          "high": 2324,
+          "medium": 5858,
+          "low": 1963,
+          "total": 10186
+        },
+        "lastScanDate": null,
+        "worstSeverity": "CRITICAL",
+        "slaDays": 30,
+        "slaStartDate": "2021-04-09T22:19:05.826000",
+        "isExempted": null,
+        "vulnIdentifier": "CVE-2020-36244",
+        "vulnCompliance": []
+      }
+    ],
+    "isScanned": true,
+    "codeQualityMetrics": [],
+    "properties": {
+      "number": "18526",
+      "status": "Complete",
+      "numberInc": "0",
+      "releaseLead": "kkc",
+      "technicalLead": "lsaintz",
+      "isLatestCompleted": true
+    },
+    "isOrphan": false
+  }
+]

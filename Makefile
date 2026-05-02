@@ -1,7 +1,7 @@
 IMAGE := options-tracker:latest
 COMPOSE := docker compose
 
-.PHONY: build run stop logs clean rebuild help news-test generate-tickers
+.PHONY: build run stop logs clean rebuild help news-test
 
 help:
 	@echo "Targets:"
@@ -17,14 +17,10 @@ build:
 	$(COMPOSE) build
 
 run:
-	@test -f .env || (echo "ERROR: .env missing. Run: cp .env.example .env and fill it in." && exit 1)
-	@$(MAKE) generate-tickers
 	@mkdir -p .cache
 	$(COMPOSE) up
 
 
-generate-tickers:
-	@bash scripts/generate_tickers_runner.sh
 
 stop:
 	$(COMPOSE) down

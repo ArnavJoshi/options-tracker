@@ -1,4 +1,4 @@
-ASX listed companies as at Thu Apr 23 06:19:47 AEST 2026
+ASX listed companies as at Tue Apr 28 05:15:11 AEST 2026
 
 Company name,ASX code,GICS industry group
 "1414 DEGREES LIMITED","14D","Capital Goods"
@@ -333,6 +333,7 @@ Company name,ASX code,GICS industry group
 "BOA RESOURCES LTD","BOA","Materials"
 "BOAB METALS LIMITED","BML","Materials"
 "BOOM LOGISTICS LIMITED","BOL","Capital Goods"
+"BORESIGHT LTD","BST","Class Pend"
 "BOSS ENERGY LTD","BOE","Energy"
 "BOTALA ENERGY LTD","BTE","Energy"
 "BOTANIX PHARMACEUTICALS LTD","BOT","Pharmaceuticals, Biotechnology & Life Sciences"
@@ -1035,6 +1036,7 @@ Company name,ASX code,GICS industry group
 "LEGEND MINING LIMITED","LEG","Materials"
 "LENDLEASE GROUP","LLC","Real Estate Management & Development"
 "LGI LIMITED","LGI","Utilities"
+"LI-FT POWER LTD.","LFT","Class Pend"
 "LI-S ENERGY LIMITED","LIS","Capital Goods"
 "LIBERTY FINANCIAL GROUP","LFG","Financial Services"
 "LIBERTY METALS LTD","LIB","Materials"
@@ -1246,7 +1248,6 @@ Company name,ASX code,GICS industry group
 "NEX METALS EXPLORATION LIMITED","NME","Materials"
 "NEXALIS THERAPEUTICS LTD","NX1","Health Care Equipment & Services"
 "NEXGEN ENERGY (CANADA) LTD","NXG","Energy"
-"NEXION GROUP LTD","NNG","Software & Services"
 "NEXSEN LIMITED","NXN","Pharmaceuticals, Biotechnology & Life Sciences"
 "NEXTDC LIMITED","NXT","Software & Services"
 "NEXTED GROUP LIMITED","NXD","Consumer Services"
@@ -1776,7 +1777,7 @@ Company name,ASX code,GICS industry group
 "THE AUSTRALIAN WEALTH ADVISORS GROUP LIMITED","WAG","Financial Services"
 "THE CALMER CO INTERNATIONAL LIMITED","CCO","Household & Personal Products"
 "THE HYDRATION PHARMACEUTICALS COMPANY LIMITED","HPC","Household & Personal Products"
-"THE KOALA COMPANY LIMITED","KOA","Class Pend"
+"THE KOALA COMPANY LIMITED","KOA","Consumer Discretionary Distribution & Retail"
 "THE LOTTERY CORPORATION LIMITED","TLC","Consumer Services"
 "THE STAR ENTERTAINMENT GROUP LIMITED","SGR","Consumer Services"
 "THETA GOLD MINES LIMITED","TGM","Materials"
